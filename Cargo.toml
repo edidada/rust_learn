@@ -35,4 +35,28 @@ path = "src/collections/hashset.rs"
 name = "btreeset"
 path = "src/collections/btreeset.rs"
 
+[[bin]]
+name = "basic_thread"
+path = "src/threads/basic.rs"
+
+[[bin]]
+name = "thread_local"
+path = "src/threads/thread_local.rs"
+
+[[bin]]
+name = "thread_sync"
+path = "src/threads/sync.rs"
+
+[[bin]]
+name = "thread_attributes"
+path = "src/threads/attributes.rs"
+
+[[bin]]
+name = "thread_advanced"
+path = "src/threads/advanced.rs"
+
+[[bin]]
+name = "thread_complete"
+path = "src/threads/complete.rs"
+
 [dependencies]
