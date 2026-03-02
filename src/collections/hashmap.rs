@@ -4,7 +4,7 @@ use std::collections::HashMap;
 fn main() {
     // 1. 创建HashMap
     println!("1. Creating HashMap:");
-    let mut map1: HashMap<String, i32> = HashMap::new();
+    let map1: HashMap<String, i32> = HashMap::new();
     
     let mut map2 = HashMap::new();
     map2.insert("Alice", 30);
