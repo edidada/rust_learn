@@ -59,5 +59,49 @@ path = "src/threads/advanced.rs"
 name = "thread_complete"
 path = "src/threads/complete.rs"
 
+[[bin]]
+name = "01_variables_variables1"
+path = "src/exercises/01_variables/variables1.rs"
+
+[[bin]]
+name = "01_variables_variables2"
+path = "src/exercises/01_variables/variables2.rs"
+
+[[bin]]
+name = "01_variables_variables3"
+path = "src/exercises/01_variables/variables3.rs"
+
+[[bin]]
+name = "01_variables_variables4"
+path = "src/exercises/01_variables/variables4.rs"
+
+[[bin]]
+name = "01_variables_variables5"
+path = "src/exercises/01_variables/variables5.rs"
+
+[[bin]]
+name = "01_variables_variables6"
+path = "src/exercises/01_variables/variables6.rs"
+
+[[bin]]
+name = "02_functions_functions1"
+path = "src/exercises/02_functions/functions1.rs"
+
+[[bin]]
+name = "02_functions_functions2"
+path = "src/exercises/02_functions/functions2.rs"
+
+[[bin]]
+name = "02_functions_functions3"
+path = "src/exercises/02_functions/functions3.rs"
+
+[[bin]]
+name = "02_functions_functions4"
+path = "src/exercises/02_functions/functions4.rs"
+
+[[bin]]
+name = "02_functions_functions5"
+path = "src/exercises/02_functions/functions5.rs"
+
 [dependencies]
 thread_local = "1.1"
