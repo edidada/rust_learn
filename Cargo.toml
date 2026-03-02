@@ -3,4 +3,36 @@ name = "rust_learn"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "vec"
+path = "src/collections/vec.rs"
+
+[[bin]]
+name = "vecdeque"
+path = "src/collections/vecdeque.rs"
+
+[[bin]]
+name = "linkedlist"
+path = "src/collections/linkedlist.rs"
+
+[[bin]]
+name = "box_array"
+path = "src/collections/box_array.rs"
+
+[[bin]]
+name = "btreemap"
+path = "src/collections/btreemap.rs"
+
+[[bin]]
+name = "hashmap"
+path = "src/collections/hashmap.rs"
+
+[[bin]]
+name = "hashset"
+path = "src/collections/hashset.rs"
+
+[[bin]]
+name = "btreeset"
+path = "src/collections/btreeset.rs"
+
 [dependencies]
