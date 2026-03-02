@@ -60,3 +60,4 @@ name = "thread_complete"
 path = "src/threads/complete.rs"
 
 [dependencies]
+thread_local = "1.1"

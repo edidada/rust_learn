@@ -30,7 +30,11 @@ fn main() {
     // 2.2 通过 with 访问
     println!("\n2.2 通过 with 访问线程本地存储:");
     thread_local! {
-        static THREAD_ID: u64 = thread::current().id().as_u64();
+        static THREAD_ID: u64 = {
+            use std::sync::atomic::{AtomicU64, Ordering};
+            static COUNTER: AtomicU64 = AtomicU64::new(1);
+            COUNTER.fetch_add(1, Ordering::Relaxed)
+        };
     }
     
     THREAD_ID.with(|id| {

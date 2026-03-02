@@ -1,15 +1,16 @@
 // 高级线程 API 示例
 use std::thread;
 use std::panic;
+use std::sync::Arc;
 
 fn main() {
     // 5.1 作用域线程 (不会泄漏，自动join)
     println!("5.1 作用域线程示例:");
-    let data = vec![1, 2, 3];
-    
+    let data = Arc::new(vec![1, 2, 3]);
     thread::scope(|scope| {
         for i in 0..3 {
-            scope.spawn(|| {
+            let data = Arc::clone(&data);
+            scope.spawn(move || {           // ← 加 move
                 println!("作用域线程 {} 访问数据: {:?}", i, data);
             });
         }
