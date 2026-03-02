@@ -4,7 +4,7 @@ use std::vec::Vec;
 fn main() {
     // 1. 创建Vec
     println!("1. Creating Vec:");
-    let mut v1: Vec<i32> = Vec::new();
+    let v1: Vec<i32> = Vec::new();
     let v2 = vec![1, 2, 3, 4, 5];
     let v3 = Vec::from([10, 20, 30]);
     
