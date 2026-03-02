@@ -4,8 +4,8 @@ use std::collections::VecDeque;
 fn main() {
     // 1. 创建VecDeque
     println!("1. Creating VecDeque:");
-    let mut d1: VecDeque<i32> = VecDeque::new();
-    let mut d2 = VecDeque::from([1, 2, 3, 4, 5]);
+    let d1: VecDeque<i32> = VecDeque::new();
+    let d2 = VecDeque::from([1, 2, 3, 4, 5]);
     
     println!("d1: {:?} (empty: {})", d1, d1.is_empty());
     println!("d2: {:?}", d2);
