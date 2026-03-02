@@ -4,10 +4,18 @@ fn bigger(a: i32, b: i32) -> i32 {
     // Do not use:
     // - another function call
     // - additional variables
+    if a > b {
+        a
+    } else {
+        b
+    }
 }
 
 fn main() {
     // You can optionally experiment here.
+    println!("bigger(10, 8) = {}", bigger(10, 8));   // 10
+    println!("bigger(32, 42) = {}", bigger(32, 42)); // 42
+    println!("bigger(42, 42) = {}", bigger(42, 42)); // 42
 }
 
 // Don't mind this for now :)

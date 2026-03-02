@@ -103,5 +103,17 @@ path = "src/exercises/02_functions/functions4.rs"
 name = "02_functions_functions5"
 path = "src/exercises/02_functions/functions5.rs"
 
+[[bin]]
+name = "03_if_if1"
+path = "src/exercises/03_if/if1.rs"
+
+[[bin]]
+name = "03_if_if2"
+path = "src/exercises/03_if/if2.rs"
+
+[[bin]]
+name = "03_if_if3"
+path = "src/exercises/03_if/if3.rs"
+
 [dependencies]
 thread_local = "1.1"
