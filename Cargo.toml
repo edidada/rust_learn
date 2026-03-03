@@ -191,5 +191,21 @@ path = "src/exercises/08_enums/enums2.rs"
 name = "08_enums_enums3"
 path = "src/exercises/08_enums/enums3.rs"
 
+[[bin]]
+name = "09_strings_strings1"
+path = "src/exercises/09_strings/strings1.rs"
+
+[[bin]]
+name = "09_strings_strings2"
+path = "src/exercises/09_strings/strings2.rs"
+
+[[bin]]
+name = "09_strings_strings3"
+path = "src/exercises/09_strings/strings3.rs"
+
+[[bin]]
+name = "09_strings_strings4"
+path = "src/exercises/09_strings/strings4.rs"
+
 [dependencies]
 thread_local = "1.1"
