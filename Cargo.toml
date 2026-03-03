@@ -115,5 +115,29 @@ path = "src/exercises/03_if/if2.rs"
 name = "03_if_if3"
 path = "src/exercises/03_if/if3.rs"
 
+[[bin]]
+name = "04_primitive_type_primitive_types1"
+path = "src/exercises/04_primitive_types/primitive_types1.rs"
+
+[[bin]]
+name = "04_primitive_type_primitive_types2"
+path = "src/exercises/04_primitive_types/primitive_types2.rs"
+
+[[bin]]
+name = "04_primitive_type_primitive_types3"
+path = "src/exercises/04_primitive_types/primitive_types3.rs"
+
+[[bin]]
+name = "04_primitive_type_primitive_types4"
+path = "src/exercises/04_primitive_types/primitive_types4.rs"
+
+[[bin]]
+name = "04_primitive_type_primitive_types5"
+path = "src/exercises/04_primitive_types/primitive_types5.rs"
+
+[[bin]]
+name = "04_primitive_type_primitive_types6"
+path = "src/exercises/04_primitive_types/primitive_types6.rs"
+
 [dependencies]
 thread_local = "1.1"
