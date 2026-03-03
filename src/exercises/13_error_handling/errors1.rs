@@ -4,17 +4,25 @@
 // construct to `Option` that can be used to express error conditions. Change
 // the function signature and body to return `Result<String, String>` instead
 // of `Option<String>`.
-fn generate_nametag_text(name: String) -> Option<String> {
+fn generate_nametag_text(name: String) -> Result<String, String>  {
     if name.is_empty() {
         // Empty names aren't allowed
-        None
+        Err("Empty names aren't allowed".to_string())  // ✅ 返回 Err
     } else {
-        Some(format!("Hi! My name is {name}"))
+        Ok(format!("Hi! My name is {name}"))  // ✅ 返回 Ok
     }
 }
 
 fn main() {
     // You can optionally experiment here.
+    let test_names = vec!["Alice", "", "Bob"];
+
+    for name in test_names {
+        match generate_nametag_text(name.to_string()) {
+            Ok(text) => println!("成功: {}", text),
+            Err(err) => println!("失败: {} -> 错误: {}", name, err),
+        }
+    }
 }
 
 #[cfg(test)]

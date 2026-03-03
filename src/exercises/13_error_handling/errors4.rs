@@ -11,12 +11,24 @@ impl PositiveNonzeroInteger {
     fn new(value: i64) -> Result<Self, CreationError> {
         // TODO: This function shouldn't always return an `Ok`.
         // Read the tests below to clarify what should be returned.
-        Ok(Self(value as u64))
+        match value {
+            v if v > 0 => Ok(Self(v as u64)),  // 正数：成功
+            v if v == 0 => Err(CreationError::Zero),  // 零：错误
+            _ => Err(CreationError::Negative),  // 负数：错误
+        }
     }
 }
 
 fn main() {
     // You can optionally experiment here.
+    let test_values = [10, 0, -10];
+
+    for value in test_values {
+        match PositiveNonzeroInteger::new(value) {
+            Ok(num) => println!("{} -> Ok({:?})", value, num),
+            Err(e) => println!("{} -> Err({:?})", value, e),
+        }
+    }
 }
 
 #[cfg(test)]
