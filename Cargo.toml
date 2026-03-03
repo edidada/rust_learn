@@ -179,5 +179,17 @@ path = "src/exercises/07_structs/structs2.rs"
 name = "07_structs_structs3"
 path = "src/exercises/07_structs/structs3.rs"
 
+[[bin]]
+name = "08_enums_enums1"
+path = "src/exercises/08_enums/enums1.rs"
+
+[[bin]]
+name = "08_enums_enums2"
+path = "src/exercises/08_enums/enums2.rs"
+
+[[bin]]
+name = "08_enums_enums3"
+path = "src/exercises/08_enums/enums3.rs"
+
 [dependencies]
 thread_local = "1.1"
