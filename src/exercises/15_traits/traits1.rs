@@ -6,6 +6,10 @@ trait AppendBar {
 
 impl AppendBar for String {
     // TODO: Implement `AppendBar` for the type `String`.
+    fn append_bar(mut self) -> Self {  // ✅ 实现 append_bar 方法
+        self.push_str("Bar");  // ✅ 将 "Bar" 追加到字符串末尾
+        self
+    }
 }
 
 fn main() {
