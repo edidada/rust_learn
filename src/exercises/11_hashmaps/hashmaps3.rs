@@ -31,6 +31,15 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+        // 更新球队1的数据
+        let team_1_entry = scores.entry(team_1_name).or_insert_with(TeamScores::default);
+        team_1_entry.goals_scored += team_1_score;
+        team_1_entry.goals_conceded += team_2_score;
+
+        // 更新球队2的数据
+        let team_2_entry = scores.entry(team_2_name).or_insert_with(TeamScores::default);
+        team_2_entry.goals_scored += team_2_score;
+        team_2_entry.goals_conceded += team_1_score;
     }
 
     scores
@@ -38,7 +47,28 @@ fn build_scores_table(results: &str) -> HashMap<&str, TeamScores> {
 
 fn main() {
     // You can optionally experiment here.
+
+    let results = "England,France,4,2
+France,Italy,3,1
+Poland,Spain,2,0
+Germany,England,2,1
+England,Spain,1,0";
+
+    let scores = build_scores_table(results);
+
+    println!("球队积分榜:");
+    println!("{:<10} {:<12} {:<12}", "球队", "进球", "失球");
+    println!("{}", "-".repeat(36));
+
+    let mut teams: Vec<&&str> = scores.keys().collect();
+    teams.sort();
+
+    for team in teams {
+        let stats = scores.get(team).unwrap();
+        println!("{:<10} {:<12} {:<12}", team, stats.goals_scored, stats.goals_conceded);
+    }
 }
+
 
 #[cfg(test)]
 mod tests {

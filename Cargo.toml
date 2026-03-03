@@ -231,5 +231,17 @@ path = "src/exercises/11_hashmaps/hashmaps2.rs"
 name = "11_hashmaps_hashmaps3"
 path = "src/exercises/11_hashmaps/hashmaps3.rs"
 
+[[bin]]
+name = "12_options_options1"
+path = "src/exercises/12_options/options1.rs"
+
+[[bin]]
+name = "12_options_options2"
+path = "src/exercises/12_options/options2.rs"
+
+[[bin]]
+name = "12_options_options3"
+path = "src/exercises/12_options/options3.rs"
+
 [dependencies]
 thread_local = "1.1"
