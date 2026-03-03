@@ -207,5 +207,29 @@ path = "src/exercises/09_strings/strings3.rs"
 name = "09_strings_strings4"
 path = "src/exercises/09_strings/strings4.rs"
 
+[[bin]]
+name = "10_modules_modules1"
+path = "src/exercises/10_modules/modules1.rs"
+
+[[bin]]
+name = "10_modules_modules2"
+path = "src/exercises/10_modules/modules2.rs"
+
+[[bin]]
+name = "10_modules_modules3"
+path = "src/exercises/10_modules/modules3.rs"
+
+[[bin]]
+name = "11_hashmaps_hashmaps1"
+path = "src/exercises/11_hashmaps/hashmaps1.rs"
+
+[[bin]]
+name = "11_hashmaps_hashmaps2"
+path = "src/exercises/11_hashmaps/hashmaps2.rs"
+
+[[bin]]
+name = "11_hashmaps_hashmaps3"
+path = "src/exercises/11_hashmaps/hashmaps3.rs"
+
 [dependencies]
 thread_local = "1.1"
