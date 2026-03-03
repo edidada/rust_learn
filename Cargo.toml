@@ -167,5 +167,17 @@ path = "src/exercises/06_move_semantics/move_semantics4.rs"
 name = "06_move_semantics_move_semantics5"
 path = "src/exercises/06_move_semantics/move_semantics5.rs"
 
+[[bin]]
+name = "07_structs_structs1"
+path = "src/exercises/07_structs/structs1.rs"
+
+[[bin]]
+name = "07_structs_structs2"
+path = "src/exercises/07_structs/structs2.rs"
+
+[[bin]]
+name = "07_structs_structs3"
+path = "src/exercises/07_structs/structs3.rs"
+
 [dependencies]
 thread_local = "1.1"
