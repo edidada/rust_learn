@@ -28,6 +28,11 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // `map` is a hash map with `String` keys and `Progress` values.
     // map = { "variables1": Complete, "from_str": None, … }
+
+    // 使用迭代器的 filter 和 count 方法
+    map.values()
+       .filter(|&&progress| progress == value)  // 筛选出匹配的进度
+       .count()  // 计数
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -48,10 +53,36 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // `collection` is a slice of hash maps.
     // collection = [{ "variables1": Complete, "from_str": None, … },
     //               { "variables2": Complete, … }, … ]
+
+    // 使用 flat_map 将两层迭代合并，然后使用 filter 和 count
+    collection.iter()
+              .flat_map(|map| map.values())  // 将多个哈希映射的值展平
+              .filter(|&&progress| progress == value)  // 筛选出匹配的进度
+              .count()  // 计数
 }
 
 fn main() {
     // You can optionally experiment here.
+    use Progress::*;
+
+    let mut map1 = HashMap::new();
+    map1.insert("exercise1".to_string(), Complete);
+    map1.insert("exercise2".to_string(), Some);
+    map1.insert("exercise3".to_string(), None);
+
+    let mut map2 = HashMap::new();
+    map2.insert("exercise4".to_string(), Complete);
+    map2.insert("exercise5".to_string(), Complete);
+    map2.insert("exercise6".to_string(), None);
+
+    println!("Map1 中 Complete 的数量: {}", count_iterator(&map1, Complete));
+    println!("Map1 中 Some 的数量: {}", count_iterator(&map1, Some));
+    println!("Map1 中 None 的数量: {}", count_iterator(&map1, None));
+
+    let collection = vec![map1, map2];
+    println!("\n集合中 Complete 的总数: {}", count_collection_iterator(&collection, Complete));
+    println!("集合中 Some 的总数: {}", count_collection_iterator(&collection, Some));
+    println!("集合中 None 的总数: {}", count_collection_iterator(&collection, None));
 }
 
 #[cfg(test)]

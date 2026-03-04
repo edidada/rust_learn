@@ -10,10 +10,16 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+    // 使用迭代器和 fold 方法计算阶乘
+    (1..=num).product()
 }
 
 fn main() {
     // You can optionally experiment here.
+    println!("0! = {}", factorial(0));
+    println!("1! = {}", factorial(1));
+    println!("5! = {}", factorial(5));
+    println!("10! = {}", factorial(10));
 }
 
 #[cfg(test)]
