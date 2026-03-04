@@ -404,7 +404,7 @@ name = "23_conversions_from_into"
 path = "src/exercises/23_conversions/from_into.rs"
 
 [[bin]]
-name = "23_conversions"
+name = "23_conversions_from_str"
 path = "src/exercises/23_conversions/from_str.rs"
 
 [[bin]]

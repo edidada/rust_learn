@@ -41,12 +41,58 @@ enum ParsePersonError {
 impl FromStr for Person {
     type Err = ParsePersonError;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {}
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // 步骤1: 按逗号分割字符串
+        let parts: Vec<&str> = s.split(',').collect();
+        
+        // 步骤2: 检查是否恰好有2个部分
+        if parts.len() != 2 {
+            return Err(ParsePersonError::BadLen);
+        }
+        
+        // 步骤3: 获取名字
+        let name = parts[0].trim();
+        
+        // 步骤4: 检查名字是否为空
+        if name.is_empty() {
+            return Err(ParsePersonError::NoName);
+        }
+        
+        // 步骤5: 解析年龄
+        let age_str = parts[1].trim();
+        
+        // 步骤6: 尝试解析年龄，失败则返回错误
+        match age_str.parse::<u8>() {
+            Ok(age) => Ok(Person {
+                name: name.to_string(),
+                age,
+            }),
+            Err(e) => Err(ParsePersonError::ParseInt(e)),
+        }
+    }
 }
 
 fn main() {
-    let p = "Mark,20".parse::<Person>();
-    println!("{p:?}");
+    // 测试各种情况
+    let test_cases = [
+        "Mark,20",
+        "",
+        "John,",
+        "John,twenty",
+        "John",
+        ",1",
+        ",",
+        ",one",
+        "John,32,",
+        "John,32,man",
+    ];
+    
+    for input in test_cases {
+        match input.parse::<Person>() {
+            Ok(p) => println!("输入: '{input}' -> 成功: {:?}", p),
+            Err(e) => println!("输入: '{input}' -> 错误: {:?}", e),
+        }
+    }
 }
 
 #[cfg(test)]

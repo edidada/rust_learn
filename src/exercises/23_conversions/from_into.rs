@@ -34,7 +34,36 @@ impl Default for Person {
 // 5. Parse the second element from the split operation into a `u8` as the age.
 // 6. If parsing the age fails, return the default of `Person`.
 impl From<&str> for Person {
-    fn from(s: &str) -> Self {}
+    fn from(s: &str) -> Self {
+        // 步骤1: 按逗号分割字符串
+        let parts: Vec<&str> = s.split(',').collect();
+        
+        // 步骤2: 检查是否恰好有2个部分
+        if parts.len() != 2 {
+            return Person::default();
+        }
+        
+        // 步骤3: 获取名字
+        let name = parts[0].trim();
+        
+        // 步骤4: 检查名字是否为空
+        if name.is_empty() {
+            return Person::default();
+        }
+        
+        // 步骤5: 解析年龄
+        let age_str = parts[1].trim();
+        let age_result = age_str.parse::<u8>();
+        
+        // 步骤6: 检查年龄解析是否成功
+        match age_result {
+            Ok(age) => Person {
+                name: name.to_string(),
+                age,
+            },
+            Err(_) => Person::default(),
+        }
+    }
 }
 
 fn main() {
@@ -45,6 +74,24 @@ fn main() {
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();
     println!("{p2:?}");
+    
+    // 测试各种情况
+    let test_cases = [
+        ("Mark,20", "有效"),
+        ("", "空字符串"),
+        ("Mark", "缺少逗号和年龄"),
+        ("Mark,", "缺少年龄"),
+        (",1", "缺少名字"),
+        (",", "缺少名字和年龄"),
+        (",one", "无效年龄"),
+        ("Mike,32,", "多余逗号"),
+        ("Mike,32,dog", "多余部分"),
+    ];
+    
+    for (input, description) in test_cases {
+        let p = Person::from(input);
+        println!("输入: '{input}' ({description}) -> {:?}", p);
+    }
 }
 
 #[cfg(test)]

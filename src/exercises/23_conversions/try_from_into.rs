@@ -28,14 +28,40 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (red, green, blue) = tuple;
+        
+        // 检查每个分量是否在 0..=255 范围内
+        if !(0..=255).contains(&red) || !(0..=255).contains(&green) || !(0..=255).contains(&blue) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        Ok(Color {
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        })
+    }
 }
 
 // TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let [red, green, blue] = arr;
+        
+        // 检查每个分量是否在 0..=255 范围内
+        if !(0..=255).contains(&red) || !(0..=255).contains(&green) || !(0..=255).contains(&blue) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        Ok(Color {
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        })
+    }
 }
 
 // TODO: Slice implementation.
@@ -43,7 +69,27 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        // 检查切片长度是否为3
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        
+        let red = slice[0];
+        let green = slice[1];
+        let blue = slice[2];
+        
+        // 检查每个分量是否在 0..=255 范围内
+        if !(0..=255).contains(&red) || !(0..=255).contains(&green) || !(0..=255).contains(&blue) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        Ok(Color {
+            red: red as u8,
+            green: green as u8,
+            blue: blue as u8,
+        })
+    }
 }
 
 fn main() {
@@ -62,6 +108,22 @@ fn main() {
     // or put the slice within round brackets and use `try_into`.
     let c4: Result<Color, _> = (&v[..]).try_into();
     println!("{c4:?}");
+
+    // 测试边界情况
+    println!("\n测试边界情况:");
+    let test_cases = [
+        (255, 255, 255),  // 最大值
+        (0, 0, 0),        // 最小值
+        (256, 100, 100),  // 超出范围
+        (-1, 100, 100),   // 负数
+    ];
+
+    for (r, g, b) in test_cases {
+        match Color::try_from((r, g, b)) {
+            Ok(color) => println!("({}, {}, {}) -> {:?}", r, g, b, color),
+            Err(e) => println!("({}, {}, {}) -> 错误: {:?}", r, g, b, e),
+        }
+    }
 }
 
 #[cfg(test)]
