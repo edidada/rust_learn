@@ -20,10 +20,15 @@ fn main() {
         handles.push(handle);
     }
 
-    let mut results = Vec::new();
+    let mut results: Vec<u128> = Vec::new();
     for handle in handles {
         // TODO: Collect the results of all threads into the `results` vector.
         // Use the `JoinHandle` struct which is returned by `thread::spawn`.
+        // 使用 join() 等待线程完成并获取返回值
+        match handle.join() {
+            Ok(duration) => results.push(duration),
+            Err(e) => eprintln!("线程异常退出: {:?}", e),
+        }
     }
 
     if results.len() != 10 {
