@@ -17,6 +17,20 @@ fn abs_all(input: &mut Cow<[i32]>) {
 
 fn main() {
     // You can optionally experiment here.
+    // 测试各种场景
+    let borrowed_vec = vec![-1, 0, 1];
+    let mut borrowed_cow = Cow::from(&borrowed_vec);
+    println!("借用但需要修改前: {:?}", borrowed_cow);
+    abs_all(&mut borrowed_cow);
+    println!("借用但需要修改后: {:?}", borrowed_cow);
+    println!("是否是 Owned? {}", matches!(borrowed_cow, Cow::Owned(_)));
+
+    let owned_vec = vec![0, 1, 2];
+    let mut owned_cow = Cow::from(owned_vec);
+    println!("\n拥有且不需要修改前: {:?}", owned_cow);
+    abs_all(&mut owned_cow);
+    println!("拥有且不需要修改后: {:?}", owned_cow);
+    println!("是否是 Owned? {}", matches!(owned_cow, Cow::Owned(_)));
 }
 
 #[cfg(test)]
@@ -39,7 +53,7 @@ mod tests {
         let mut input = Cow::from(&vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Borrowed(_)));
     }
 
     #[test]
@@ -52,7 +66,7 @@ mod tests {
         let mut input = Cow::from(vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Owned(_)));
     }
 
     #[test]
@@ -64,6 +78,6 @@ mod tests {
         let mut input = Cow::from(vec);
         abs_all(&mut input);
         // TODO: Replace `todo!()` with `Cow::Owned(_)` or `Cow::Borrowed(_)`.
-        assert!(matches!(input, todo!()));
+        assert!(matches!(input, Cow::Owned(_)));
     }
 }
