@@ -8,10 +8,10 @@ mod tests {
     // Don't add, change or remove any line.
     #[test]
     fn move_semantics4() {
-        let mut x = Vec::new();
-        let y = &mut x;
+        let mut x:Vec<i32> = Vec::new();
+        let y:&mut Vec<i32>  = &mut x;
         y.push(42);
-        let z = &mut x;
+        let z:&mut Vec<i32>  = &mut x;
         z.push(13);
         assert_eq!(x, [42, 13]);
     }

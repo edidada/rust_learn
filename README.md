@@ -20,3 +20,11 @@ error[E0384]: cannot assign twice to immutable variable `x`
 |     ^^^^^ cannot assign twice to immutable variable
 |
 ```
+
+
+```
+Sequences: Vec, VecDeque, LinkedList
+Maps: HashMap, BTreeMap
+Sets: HashSet, BTreeSet
+Misc: BinaryHeap
+```
