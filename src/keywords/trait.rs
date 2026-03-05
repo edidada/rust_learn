@@ -31,7 +31,7 @@ impl Animal for Cat {
 }
 
 // 3. trait作为参数
-defn make_animal_speak(animal: &impl Animal) {
+fn make_animal_speak(animal: &impl Animal) {
     animal.speak();
     animal.sleep();
 }
