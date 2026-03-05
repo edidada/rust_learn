@@ -16,7 +16,7 @@ fn string_uppercase(mut data: String) {
 }
 
 fn main() {
-    let data = "Rust is great!".to_string();
+    let data:String = "Rust is great!".to_string();
 
     get_char(&data);
 
