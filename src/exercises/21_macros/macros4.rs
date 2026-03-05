@@ -4,7 +4,7 @@ macro_rules! my_macro {
     () => {
         println!("Check out my macro!");
     };  // ✅ 添加分号
-    ($val:expr) => {
+    ($val:expr_2021) => {
         println!("Look at this other macro: {}", $val);
     }
 }
