@@ -116,6 +116,86 @@ name = "keywords_loop"
 path = "src/keywords/loop.rs"
 
 [[bin]]
+name = "keywords_match"
+path = "src/keywords/match.rs"
+
+[[bin]]
+name = "keywords_mod"
+path = "src/keywords/mod__.rs"
+
+[[bin]]
+name = "keywords_move"
+path = "src/keywords/move.rs"
+
+[[bin]]
+name = "keywords_mut"
+path = "src/keywords/mut.rs"
+
+[[bin]]
+name = "keywords_pub"
+path = "src/keywords/pub.rs"
+
+[[bin]]
+name = "keywords_ref"
+path = "src/keywords/ref.rs"
+
+[[bin]]
+name = "keywords_return"
+path = "src/keywords/return.rs"
+
+[[bin]]
+name = "keywords_self"
+path = "src/keywords/self.rs"
+
+[[bin]]
+name = "keywords_selfty"
+path = "src/keywords/selfty.rs"
+
+[[bin]]
+name = "keywords_static"
+path = "src/keywords/static.rs"
+
+[[bin]]
+name = "keywords_struct"
+path = "src/keywords/struct.rs"
+
+[[bin]]
+name = "keywords_super"
+path = "src/keywords/super.rs"
+
+[[bin]]
+name = "keywords_trait"
+path = "src/keywords/trait.rs"
+
+[[bin]]
+name = "keywords_true"
+path = "src/keywords/true.rs"
+
+[[bin]]
+name = "keywords_type"
+path = "src/keywords/type.rs"
+
+[[bin]]
+name = "keywords_union"
+path = "src/keywords/union.rs"
+
+[[bin]]
+name = "keywords_unsafe"
+path = "src/keywords/unsafe.rs"
+
+[[bin]]
+name = "keywords_use"
+path = "src/keywords/use.rs"
+
+[[bin]]
+name = "keywords_where"
+path = "src/keywords/where.rs"
+
+[[bin]]
+name = "keywords_while"
+path = "src/keywords/while.rs"
+
+[[bin]]
 name = "basic_thread"
 path = "src/threads/basic.rs"
 
