@@ -1,7 +1,7 @@
 // extern 关键字示例
 
 // 1. 声明外部函数（C语言风格）
-extern "C" {
+unsafe extern "C" {
     fn puts(s: *const u8) -> i32;
     fn getchar() -> i32;
 }
@@ -11,7 +11,7 @@ extern "C" {
 // extern crate rand;
 
 // 3. 定义外部块，供其他语言调用
-#[no_mangle]
+#[unsafe(no_mangle)]
 pub extern "C" fn rust_function(x: i32, y: i32) -> i32 {
     x + y
 }

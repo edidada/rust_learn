@@ -47,9 +47,9 @@ path = "src/keywords/async.rs"
 name = "keywords_await"
 path = "src/keywords/await.rs"
 
-#[[bin]]
-#name = "keywords_become"
-#path = "src/keywords/become.rs"
+[[bin]]
+name = "keywords_become"
+path = "src/keywords/become.rs"
 
 [[bin]]
 name = "keywords_break"
@@ -79,9 +79,9 @@ path = "src/keywords/else.rs"
 name = "keywords_enum"
 path = "src/keywords/enum.rs"
 
-#[[bin]]
-#name = "keywords_extern"
-#path = "src/keywords/extern.rs"
+[[bin]]
+name = "keywords_extern"
+path = "src/keywords/extern.rs"
 
 [[bin]]
 name = "keywords_false"
