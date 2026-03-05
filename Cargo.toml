@@ -36,6 +36,86 @@ name = "btreeset"
 path = "src/collections/btreeset.rs"
 
 [[bin]]
+name = "keywords_as"
+path = "src/keywords/as.rs"
+
+[[bin]]
+name = "keywords_async"
+path = "src/keywords/async.rs"
+
+[[bin]]
+name = "keywords_await"
+path = "src/keywords/await.rs"
+
+#[[bin]]
+#name = "keywords_become"
+#path = "src/keywords/become.rs"
+
+[[bin]]
+name = "keywords_break"
+path = "src/keywords/break.rs"
+
+[[bin]]
+name = "keywords_const"
+path = "src/keywords/const.rs"
+
+[[bin]]
+name = "keywords_continue"
+path = "src/keywords/continue.rs"
+
+[[bin]]
+name = "keywords_crate"
+path = "src/keywords/crate.rs"
+
+[[bin]]
+name = "keywords_dyn"
+path = "src/keywords/dyn.rs"
+
+[[bin]]
+name = "keywords_else"
+path = "src/keywords/else.rs"
+
+[[bin]]
+name = "keywords_enum"
+path = "src/keywords/enum.rs"
+
+#[[bin]]
+#name = "keywords_extern"
+#path = "src/keywords/extern.rs"
+
+[[bin]]
+name = "keywords_false"
+path = "src/keywords/false.rs"
+
+[[bin]]
+name = "keywords_fn"
+path = "src/keywords/fn.rs"
+
+[[bin]]
+name = "keywords_for"
+path = "src/keywords/for.rs"
+
+[[bin]]
+name = "keywords_if"
+path = "src/keywords/if.rs"
+
+[[bin]]
+name = "keywords_impl"
+path = "src/keywords/impl.rs"
+
+[[bin]]
+name = "keywords_in"
+path = "src/keywords/in.rs"
+
+[[bin]]
+name = "keywords_let"
+path = "src/keywords/let.rs"
+
+[[bin]]
+name = "keywords_loop"
+path = "src/keywords/loop.rs"
+
+[[bin]]
 name = "basic_thread"
 path = "src/threads/basic.rs"
 
@@ -429,3 +509,4 @@ path = "src/exercises/quizzes/quiz3.rs"
 
 [dependencies]
 thread_local = "1.1"
+tokio = { version = "1.0", features = ["full"] }
