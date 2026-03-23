@@ -59,5 +59,9 @@ path = "src/threads/advanced.rs"
 name = "thread_complete"
 path = "src/threads/complete.rs"
 
+[[bin]]
+name = "edition_2015"
+path = "src/edition_features/edition_2015.rs"
+
 [dependencies]
 thread_local = "1.1"
