@@ -10,6 +10,15 @@ const PI: f64 = 3.141592653589793;
 // 3. 静态字符串
 static HELLO: &str = "Hello from static";
 
+// 辅助函数：增加计数器
+fn increment_counter() {
+    unsafe {
+        println!("Initial COUNTER: {}", *(&raw mut COUNTER));
+        *(&raw mut COUNTER) += 1;
+        println!("Updated COUNTER: {}", *(&raw mut COUNTER));
+    }
+}
+
 fn main() {
     println!("Using static keyword example");
     
@@ -21,17 +30,13 @@ fn main() {
     println!("PI: {}", PI);
     
     // 修改可变静态变量（需要unsafe）
-    unsafe {
-        println!("Initial COUNTER: {}", COUNTER);
-        COUNTER += 1;
-        println!("Updated COUNTER: {}", COUNTER);
-    }
+    increment_counter();
     
     // 多次修改
     for i in 0..3 {
         unsafe {
-            COUNTER += 1;
-            println!("COUNTER after iteration {}: {}", i + 1, COUNTER);
+            *(&raw mut COUNTER) += 1;
+            println!("COUNTER after iteration {}: {}", i + 1, *(&raw mut COUNTER));
         }
     }
 }

@@ -2,13 +2,13 @@
 
 // 1. 声明模块
 mod utils {
-    // 模块内的函数
+    // 公共函数
     pub fn helper() {
         println!("Helper function called");
     }
     
-    // 模块内的子模块
-    mod inner {
+    // 公共模块
+    pub mod inner {
         pub fn inner_helper() {
             println!("Inner helper function called");
         }

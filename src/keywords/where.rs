@@ -8,9 +8,8 @@ fn print_items<T>(items: &[T]) where T: std::fmt::Display {
 }
 
 // 2. 多个约束条件
-fn compare_and_print<T, U>(a: T, b: U) where 
+fn compare_and_print<T>(a: T, b: T) where 
     T: std::fmt::Display + PartialOrd,
-    U: std::fmt::Display + PartialOrd,
 {
     println!("a: {}, b: {}", a, b);
     if a < b {
