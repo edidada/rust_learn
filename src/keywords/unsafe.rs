@@ -31,13 +31,13 @@ static mut COUNTER: i32 = 0;
 
 fn modify_counter() {
     unsafe {
-        COUNTER += 1;
-        println!("Counter: {}", COUNTER);
+        *(&raw mut COUNTER) += 1;
+        println!("Counter: {}", *(&raw mut COUNTER));
     }
 }
 
 // 5. 调用外部C函数
-extern "C" {
+unsafe extern "C" {
     fn puts(s: *const u8) -> i32;
 }
 

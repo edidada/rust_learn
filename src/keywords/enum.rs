@@ -51,7 +51,7 @@ fn main() {
     
     // 3. 使用实现了方法的枚举
     let some_value = Option::Some(42);
-    let none_value = Option::None;
+    let none_value: Option<i32> = Option::None;
     
     println!("some_value is_some: {}", some_value.is_some());
     println!("none_value is_some: {}", none_value.is_some());
