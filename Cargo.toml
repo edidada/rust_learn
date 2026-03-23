@@ -67,5 +67,9 @@ path = "src/edition_features/edition_2015.rs"
 name = "edition_2018"
 path = "src/edition_features/edition_2018.rs"
 
+[[bin]]
+name = "edition_2021"
+path = "src/edition_features/edition_2021.rs"
+
 [dependencies]
 thread_local = "1.1"
