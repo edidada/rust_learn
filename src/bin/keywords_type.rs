@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // type 关键字示例
 
 // 1. 基本类型别名

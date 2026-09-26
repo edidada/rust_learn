@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 fn main() {
     // 1. 创建BTreeMap
     println!("1. Creating BTreeMap:");
-    let mut map1: BTreeMap<String, i32> = BTreeMap::new();
+    let map1: BTreeMap<String, i32> = BTreeMap::new();
     
     let mut map2 = BTreeMap::new();
     map2.insert("Alice", 30);

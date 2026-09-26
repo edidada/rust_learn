@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 struct Point {
     x: u64,
     y: u64,

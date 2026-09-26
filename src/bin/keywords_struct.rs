@@ -10,6 +10,7 @@ struct Person {
 struct Point(i32, i32);
 
 // 3. 单元结构体
+#[derive(Debug)]
 struct Unit;
 
 // 4. 带方法的结构体
@@ -45,5 +46,5 @@ fn main() {
     
     // 3. 使用单元结构体
     let unit = Unit;
-    println!("Unit struct created");
+    println!("Unit struct created: {:?}", unit);
 }

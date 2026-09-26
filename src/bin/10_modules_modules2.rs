@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // You can bring module paths into scopes and provide new names for them with
 // the `use` and `as` keywords.
 

@@ -22,7 +22,7 @@ fn main() {
     // 3. 无限循环与break
     println!("\n3. Infinite loop with break:");
     let mut countdown = 5;
-    while true {
+    loop {
         println!("Countdown: {}", countdown);
         countdown -= 1;
         if countdown < 0 {

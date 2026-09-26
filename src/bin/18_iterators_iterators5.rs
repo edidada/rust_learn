@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Let's define a simple model to track Rustlings' exercise progress. Progress
 // will be modelled using a hash map. The name of the exercise is the key and
 // the progress is the value. Two counting functions were created to count the

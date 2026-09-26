@@ -4,8 +4,8 @@ use std::collections::LinkedList;
 fn main() {
     // 1. 创建LinkedList
     println!("1. Creating LinkedList:");
-    let mut l1: LinkedList<i32> = LinkedList::new();
-    let mut l2 = LinkedList::from([1, 2, 3, 4, 5]);
+    let l1: LinkedList<i32> = LinkedList::new();
+    let l2 = LinkedList::from([1, 2, 3, 4, 5]);
     
     println!("l1: {:?} (empty: {})", l1, l1.is_empty());
     println!("l2: {:?}", l2);

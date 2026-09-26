@@ -4,7 +4,7 @@ use std::collections::BTreeSet;
 fn main() {
     // 1. 创建BTreeSet
     println!("1. Creating BTreeSet:");
-    let mut set1: BTreeSet<i32> = BTreeSet::new();
+    let set1: BTreeSet<i32> = BTreeSet::new();
     let set2 = BTreeSet::from([3, 1, 4, 1, 5, 9, 2, 6]);
     
     println!("set1: {:?} (empty: {})", set1, set1.is_empty());

@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // enum 关键字示例
 
 // 1. 基本枚举
@@ -48,6 +49,12 @@ fn main() {
     // 2. 使用带数据的枚举
     let msg1 = Message::Move { x: 10, y: 20 };
     let msg2 = Message::Write("Hello".to_string());
+    if let Message::Move { x, y } = msg1 {
+        println!("msg1: Move to ({}, {})", x, y);
+    }
+    if let Message::Write(text) = msg2 {
+        println!("msg2: Write \"{}\"", text);
+    }
     
     // 3. 使用实现了方法的枚举
     let some_value = Option::Some(42);

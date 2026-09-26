@@ -13,6 +13,7 @@ fn type_conversion() {
 
 // 2. 重命名导入
 use std::collections::HashMap as Map;
+#[allow(unused_imports)] // 演示 as 别名语法
 use std::fmt::Display as FmtDisplay;
 
 // 3. 限定路径到关联项

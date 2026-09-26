@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 trait SomeTrait {
     fn some_function(&self) -> bool {
         true

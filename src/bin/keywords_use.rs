@@ -1,3 +1,4 @@
+#![allow(unused_imports)]
 // use 关键字示例
 
 // 1. 基本导入

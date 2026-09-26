@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // match 关键字示例
 
 // 1. 基本模式匹配

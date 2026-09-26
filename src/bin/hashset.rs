@@ -4,7 +4,7 @@ use std::collections::HashSet;
 fn main() {
     // 1. 创建HashSet
     println!("1. Creating HashSet:");
-    let mut set1: HashSet<i32> = HashSet::new();
+    let set1: HashSet<i32> = HashSet::new();
     let set2 = HashSet::from([1, 2, 3, 4, 5]);
     
     println!("set1: {:?} (empty: {})", set1, set1.is_empty());

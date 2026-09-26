@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // extern 关键字示例
 
 // 1. 声明外部函数（C语言风格）
