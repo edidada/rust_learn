@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master", "2015", "2018", "2021", "2024" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "master", "2015", "2018", "2021", "2024" ]
 
 env:
   CARGO_TERM_COLOR: always
