@@ -12,7 +12,7 @@ fn vec_loop(input: &[i32]) -> Vec<i32> {
 }
 
 fn main() {
-    println!("v:{}", vec_loop(&[2, 4, 6, 8, 10]));
+    println!("v:{:?}", vec_loop(&[2, 4, 6, 8, 10]));
 }
 
 #[cfg(test)]
