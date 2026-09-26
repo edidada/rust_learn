@@ -70,7 +70,7 @@ fn panic_macro_demo() {
     // panic!("简单的panic消息");
 
     // 如果需要格式化，必须使用format!
-    let value = 42;
+    let _value = 42;
     // panic!("值是: {}", value); // 在Rust 2021中会警告
     // 应该使用:
     // panic!("值是: {value}", value = value);
