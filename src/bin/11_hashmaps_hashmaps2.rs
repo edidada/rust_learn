@@ -78,6 +78,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::iter::FromIterator;
 
     // Don't modify this function!
     fn get_fruit_basket() -> HashMap<Fruit, u32> {
@@ -125,7 +126,7 @@ mod tests {
 
         for fruit_kind in fruit_kinds {
             let Some(amount) = basket.get(&fruit_kind) else {
-                panic!("Fruit kind {fruit_kind:?} was not found in basket");
+                panic!("Fruit kind {:?} was not found in basket", fruit_kind);
             };
             assert!(*amount > 0);
         }
