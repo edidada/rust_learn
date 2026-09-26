@@ -603,6 +603,14 @@ path = "src/exercises/quizzes/quiz2.rs"
 name = "quizzes_quiz3"
 path = "src/exercises/quizzes/quiz3.rs"
 
+[[bin]]
+name = "knowledge_move_semantics"
+path = "src/knowledge/move_semantics.rs"
+
+[[bin]]
+name = "knowledge_borrow_checker_history"
+path = "src/knowledge/borrow_checker_history.rs"
+
 [dependencies]
 thread_local = "1.1"
 tokio = { version = "1.0", features = ["full"] }

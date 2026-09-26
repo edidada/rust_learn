@@ -28,6 +28,10 @@ fn main() {
     // 6. 新预导入模块
     println!("\n6. 预导入模块 (Prelude) 更新");
     prelude_demo();
+
+    // 7. 闭包捕获与部分移动
+    println!("\n7. 闭包捕获与部分移动 (Precise Closure Capture)");
+    closure_partial_move_demo();
 }
 
 // 1. 闭包捕获规则改进
@@ -151,6 +155,35 @@ fn prelude_demo() {
     }
 
     println!("   预导入模块包含更多常用trait和类型");
+}
+
+// 7. 闭包捕获与部分移动
+// 这是"重构不友好"感受的一个直接来源：
+// 2021 之前的 Edition 中，闭包默认捕获整个变量，即使只用到结构体的一个字段，
+// 这会导致"部分移动"后的借用错误；2021 改为只捕获实际用到的字段。
+// 同一段涉及部分移动和闭包的代码，在 2018 里编译失败，在 2021 里则能通过。
+fn closure_partial_move_demo() {
+    struct P {
+        name: String,
+        age: i32,
+    }
+
+    let p = P {
+        name: String::from("a"),
+        age: 1,
+    };
+    let n = p.name; // 部分移动：p.name 被移走
+
+    // Rust 2021（精确捕获）：闭包只捕获 p.age，编译通过
+    let show = || {
+        println!("   闭包只捕获 age: {}", p.age);
+    };
+    // 若在 Rust 2018 中：闭包整体捕获 p，而 p.name 已被移走，
+    // 报错 E0382: borrow of partially moved value: `p`
+    show();
+
+    println!("   移走的 name 仍可用: {}", n);
+    println!("   2018: 闭包整体捕获 → 编译失败；2021: 精确捕获字段 → 编译通过");
 }
 
 // 其他Rust 2021改进
