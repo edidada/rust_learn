@@ -32,6 +32,14 @@ fn main() {
     // 7. 异步编程改进
     println!("\n7. 异步编程改进 (Async)");
     async_improvements();
+
+    // 8. if let 临时值作用域收紧
+    println!("\n8. if let 临时值作用域收紧 (if let Temporary Scope)");
+    if_let_temp_scope_demo();
+
+    // 9. 尾表达式临时值作用域收紧
+    println!("\n9. 尾表达式临时值作用域收紧 (Tail Expression Temporary Scope)");
+    tail_expr_temp_scope_demo();
 }
 
 // 1. 临时作用域延长
@@ -170,6 +178,67 @@ fn async_improvements() {
 
     println!("   更稳定的异步生态系统");
     println!("   改进的异步运行时支持");
+}
+
+// 8. if let 临时值作用域收紧
+// Rust 2024 收紧了 if let 和尾表达式等场景下临时值的生命周期。
+// if let：scrutinee 中生成的临时值，2021 及之前存活到整个 if let 表达式
+// （含 else 分支）结束；2024 收紧为"进入 else 分支前就 drop"
+// （then 分支行为不变）。这直接影响了借用检查的结果。
+fn if_let_temp_scope_demo() {
+    use std::sync::RwLock;
+
+    // 演示 1：经典 RwLock 死锁场景
+    let value = RwLock::new(None::<i32>);
+    if let Some(x) = *value.read().unwrap() {
+        println!("   then 分支读到: {}", x);
+    } else {
+        // 2024：读锁临时值在进入 else 前已释放 → 这里能拿到写锁
+        // 2021：读锁仍被临时值持有 → write() 永久阻塞（死锁）
+        let mut v = value.write().unwrap();
+        *v = Some(1);
+        println!("   else 分支成功拿到写锁（同一段代码在 2021 会死锁）");
+    }
+
+    // 演示 2：用自定义 Drop 观察临时值 drop 时机
+    println!("   2024 输出顺序: [make] → [drop] → else 分支");
+    println!("   2021 输出顺序: [make] → else 分支 → [drop]");
+    if let None = Some(LogGuard::new("if-let 临时值")) {
+        println!("   then 分支");
+    } else {
+        println!("   else 分支");
+    }
+}
+
+// 9. 尾表达式临时值作用域收紧
+// 2021 及之前：尾表达式中的临时值会扩展到块外（在局部变量之后才 drop）；
+// 2024：尾表达式临时值在块末尾立即 drop（先于局部变量），作用域被收紧。
+fn tail_expr_temp_scope_demo() {
+    // 2021：error[E0597]: `c` does not live long enough
+    //       （临时 Ref 比局部变量 c 活得久）
+    // 2024：临时值先于局部变量 drop → 编译通过
+    println!("   c.borrow().len() = {}", tail_borrow_len());
+}
+
+fn tail_borrow_len() -> usize {
+    let c = std::cell::RefCell::new("..");
+    c.borrow().len() // 2024：尾表达式临时值在此处立即 drop
+}
+
+// 观察临时值 drop 时机的辅助类型
+struct LogGuard(&'static str);
+
+impl LogGuard {
+    fn new(tag: &'static str) -> LogGuard {
+        println!("   [make] {}", tag);
+        LogGuard(tag)
+    }
+}
+
+impl Drop for LogGuard {
+    fn drop(&mut self) {
+        println!("   [drop] {}", self.0);
+    }
 }
 
 // 其他Rust 2024特性
