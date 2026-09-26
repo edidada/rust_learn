@@ -6,3 +6,16 @@ edition = "2015"
 [dependencies]
 thread_local = "1.1"
 tokio = { version = "1.0", features = ["full"] }
+
+# 以下 bin 使用 2018+ 才支持的语法（async/await、免 extern crate 的 crate 路径），
+# 在 2015 分支无法编译，先注释掉；
+# 2018 及以上分支合并后取消注释即可启用。
+# 规则：低版本分支注释掉，高版本分支取消注释。
+
+#[[bin]]
+#name = "keywords_async"
+#path = "src/keywords/async.rs"
+
+#[[bin]]
+#name = "keywords_await"
+#path = "src/keywords/await.rs"
