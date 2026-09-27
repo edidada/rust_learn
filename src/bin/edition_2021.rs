@@ -32,6 +32,14 @@ fn main() {
     // 7. 闭包捕获与部分移动
     println!("\n7. 闭包捕获与部分移动 (Precise Closure Capture)");
     closure_partial_move_demo();
+
+    // 8. 宏片段说明符 expr_2021 预留
+    println!("\n8. 宏片段预留 expr_2021 (Reserved Macro Fragment)");
+    reserved_macro_fragment_demo();
+
+    // 9. FromIterator 加入 prelude
+    println!("\n9. FromIterator 加入 prelude (collect 免导入)");
+    from_iterator_prelude_demo();
 }
 
 // 1. 闭包捕获规则改进
@@ -197,4 +205,40 @@ fn other_improvements() {
 
     // 4. 模式匹配穷尽性检查改进
     // 更好的警告和错误提示
+}
+
+// 8. 宏片段说明符 expr_2021 预留
+// Rust 1.56（随 2021 Edition）为宏的 expr 片段预留了 expr_2021 说明符：
+// 未来 expr 片段的行为发生变化时，已使用 expr_2021 的宏保持原语义不被波及（RFC 3086）
+macro_rules! twice {
+    ($v:expr_2021) => {
+        $v * 2
+    };
+}
+
+fn reserved_macro_fragment_demo() {
+    let result = twice!(21);
+    println!("   expr_2021 是合法的片段说明符: twice!(21) = {}", result);
+
+    // 对比：标准 expr 片段（行为与 expr_2021 相同，未来可能演进）
+    macro_rules! increment {
+        ($v:expr) => {
+            $v + 1
+        };
+    }
+    println!("   普通 expr 片段: increment!(41) = {}", increment!(41));
+}
+
+// 9. FromIterator 加入 prelude
+// Rust 2021 把 TryFrom、TryInto、FromIterator 加入 std prelude：
+// HashMap::from_iter 这类由 trait 提供的关联函数无需再手动 use（2015/2018 会 E0599）
+fn from_iterator_prelude_demo() {
+    use std::collections::HashMap;
+
+    // FromIterator 在 2021 prelude 中，直接调用 from_iter / collect
+    let map: HashMap<&str, i32> = HashMap::from_iter([("edition", 2021), ("rust", 1)]);
+    println!("   HashMap::from_iter 免导入: {:?}", map);
+
+    let squares: Vec<i32> = (1..=4).map(|n| n * n).collect();
+    println!("   collect() 收集为 Vec: {:?}", squares);
 }
