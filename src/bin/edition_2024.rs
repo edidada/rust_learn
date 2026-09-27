@@ -40,6 +40,18 @@ fn main() {
     // 9. 尾表达式临时值作用域收紧
     println!("\n9. 尾表达式临时值作用域收紧 (Tail Expression Temporary Scope)");
     tail_expr_temp_scope_demo();
+
+    // 10. unsafe 属性强制化与 unsafe extern
+    println!("\n10. unsafe 属性强制化 (Unsafe Attributes & Extern)");
+    unsafe_attribute_demo();
+
+    // 11. gen 保留关键字
+    println!("\n11. gen 保留关键字 (Reserved Keyword)");
+    gen_keyword_demo();
+
+    // 12. 返回位置 impl Trait 精确捕获
+    println!("\n12. impl Trait 精确捕获 use<> (Precise Capturing)");
+    precise_capture_demo();
 }
 
 // 1. 临时作用域延长
@@ -265,4 +277,59 @@ fn other_features() {
     println!("- 性能优化");
     println!("- 安全性增强");
     println!("- 开发工具改进");
+}
+
+// 10. unsafe 属性强制化与 unsafe extern
+// Rust 2024：具有 unsafe 语义的属性必须显式写成 #[unsafe(...)]
+// （裸 #[no_mangle] 在 2024 下是硬错误）；外部函数块需 unsafe extern；
+// unsafe fn 体内也需要显式 unsafe 块（unsafe_op_in_unsafe_fn 默认生效）
+#[unsafe(no_mangle)]
+pub extern "C" fn edition_2024_demo_add(x: i32, y: i32) -> i32 {
+    x + y
+}
+
+unsafe extern "C" {
+    // C 标准库函数，声明在 unsafe extern 块中
+    fn abs(num: i32) -> i32;
+}
+
+// 2024：unsafe 函数体不再自动视为 unsafe 块，指针解引用需显式标注
+unsafe fn deref_as_i32(p: *const i32) -> i32 {
+    unsafe { *p }
+}
+
+fn unsafe_attribute_demo() {
+    let r = edition_2024_demo_add(20, 4);
+    println!("   #[unsafe(no_mangle)] 函数调用: 20 + 4 = {}", r);
+
+    let a = unsafe { abs(-42) };
+    println!("   unsafe extern \"C\" 调用 libc abs(-42) = {}", a);
+
+    let n = 7;
+    let v = unsafe { deref_as_i32(&n as *const i32) };
+    println!("   unsafe_op_in_unsafe_fn: unsafe fn 内显式 unsafe 块读取 = {}", v);
+}
+
+// 11. gen 保留关键字
+fn gen_keyword_demo() {
+    // Rust 2024 将 gen 保留为关键字（为生成器/协程预留）：
+    //   let gen = 1;  // 2024 下编译错误：expected identifier, found keyword `gen`
+    // 需要这个名字时使用原始标识符 r# 转义
+    let r#gen = "gen 已是保留关键字，用 r#gen 转义";
+    println!("   let r#gen = {}", r#gen);
+    println!("   r# 前缀让保留字仍可作标识符（2018 引入的原始标识符）");
+}
+
+// 12. 返回位置 impl Trait 的生命周期捕获（use<> 精确捕获）
+// 2024：RPIT 默认捕获所有在作用域的生命周期；
+// 精确捕获语法 impl Trait + use<...> 可显式选择捕获哪些生命周期/类型参数（1.82 稳定）
+fn precise_capture_demo() {
+    fn greet(name: &str) -> impl std::fmt::Display + use<> {
+        // use<>：不捕获 name 的生命周期，返回值与入参借用无关
+        format!("Hello, {name}!")
+    }
+
+    let msg = greet("Rust 2024");
+    println!("   impl Trait + use<>: {}", msg);
+    println!("   2024 默认捕获所有生命周期，use<> 显式声明捕获为空");
 }
