@@ -5,6 +5,7 @@ members = [
     "crates/e2018",
     "crates/e2021",
     "crates/e2024",
+    "crates/versions",
 ]
 
 [workspace.dependencies]
