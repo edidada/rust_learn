@@ -185,3 +185,108 @@ git checkout -b note/lifetime/main      # 下一篇
 3. 按选定方案收缩 `rust.yml` 的触发分支
 
 **选择方式**：回复方案字母（单选或组合，如 `A+E`、`D`、`B+1`）。
+
+你这份文档已经把五个方案剖析得很透彻了。结合你仓库的**本质是“Rust 学习笔记”**（不是多版本产品线），我直接给结论：
+
+**推荐组合：A + E + C 的归档思路。**
+
+即：**结构用 A（单 main + workspace 多包），工作流用 E（主题分支），现有四分支按 C 打 tag 归档后删除。**
+
+---
+
+## 为什么是这个组合
+
+### 1. 你所有痛点的根因只有一个：共享内容 × 四分支
+
+- README 冲突、笔记 md 散落 4 份漂移、`Cargo.toml` edition 行取舍、`[[bin]]` 注释门槛——全部来自“同一份内容在多个长期分支上各自演化”。
+- 链式 merge 只是这个根因的**症状**，B 方案用脚本去治症状，治不了根：README 这类**语义冲突**脚本救不了。
+
+A 把“Edition 差异”收缩进 `crates/e2015..e2024`，每个包自己持有 edition，**共享内容（笔记、README）只存 main 一份**。冲突从“常态”变成“结构上不可能”。
+
+### 2. A 顺手解决了 Cargo 的硬约束
+
+你痛点 4 说得很准：一个 package 只能一个 edition。A 的 workspace 多包正是官方对此的解法——**单仓内同时演示多 Edition**，CI 一次 `cargo build --workspace` 全验证。C 的“冻结归档”做不到持续验证，D 的分支方案则要维持 5 个常驻分支 ×3 远端。
+
+### 3. E 让版本控制回归“笔记仓库”的本义
+
+笔记仓库的分支应该是**草稿纸**（写哪篇笔记就开哪支），而不是**长期版本线**。E 的分支短命、从 main 切、写完即并回删，完全贴合这个心智。它单独用不了（Edition 编译差异得先由 A 解决），但配上 A 就完整了。
+
+### 4. C 的归档思路用于善后
+
+现有 2015/2018/2021/2024 四支已完成使命。打 tag 归档（`archive/edition-2015` 等）比留分支更轻，且永久锚定历史。需要回看时临时 `checkout -b look-2015 archive/edition-2015`，看完即删。
+
+---
+
+## 为什么不选其他
+
+| 方案 | 否决理由 |
+|---|---|
+| **B 链式+自动化** | 冲突根因未除，脚本只能救一半（语义冲突无解）；长期维护负担最高；远端仍是 4 支 ×3 镜像。只适合“立刻止损、不想重构”。 |
+| **C 单独用** | 旧 Edition 代码不再持续验证，可能悄悄坏掉；“每个版本都能跑”的展示力丧失。 |
+| **D 双轨** | 分支数未降（5 常驻 ×3 远端）；笔记与演示分居两处，“边读边跑”要切分支。 |
+| **E 单独用** | 解决不了 Edition 编译差异。 |
+
+D 的唯一优势是“checkout 即纯 Edition”，但 A 用 `cargo run -p e2018` 已能覆盖，代价只是换个命令，不值当为此维持 5 个常驻分支。
+
+---
+
+## 执行路线（按你文档的“先做三件事”细化）
+
+**第一步：保工作、统远端**
+
+```powershell
+# 1. 把三个较早 demo 提交并入 main，避免重构时丢工作
+git checkout main
+git cherry-pick 4c9ca60 237a4b2 2a9a911   # 或走链式 merge
+# 若冲突，按“main 版优先”处理，因为 main 已含 2024 demo 与特性 md
+
+# 2. 统一远端语义
+git branch -u origin/main main            # 让 main 跟踪 origin/main，而非 gitee/master
+# 三 remote 分清主从：建议 origin 为主，gitee/codeup 为镜像
+```
+
+**第二步：在分支上做 A 的重构（main 保持可回退）**
+
+```powershell
+git checkout -b chore/workspace main
+
+# 建 crates/e2015..e2024，各自 Cargo.toml 写对应 edition
+# 把现有 src/bin 演示按 Edition 归入对应 crate
+# 笔记 md、README 只留 main 一份，从四分支里择最新版合并去重
+
+cargo build --workspace    # 全绿
+
+git checkout main
+git merge chore/workspace
+git branch -d chore/workspace
+```
+
+**第三步：按 C 归档旧分支**
+
+```powershell
+git tag archive/edition-2015 4c9ca60
+git tag archive/edition-2018 237a4b2
+git tag archive/edition-2021 2a9a911
+git tag archive/edition-2024 f068f01
+git branch -d 2015 2018 2021 2024
+git push origin --delete 2015 2018 2021 2024   # 三 remote 同步删
+git push origin --tags
+```
+
+**第四步：收缩 CI 触发分支**
+
+`rust.yml` 触发分支从 `main/master/2015/2018/2021/2024` 收缩为 `main`（或 `main` + `note/**`），并改为 `cargo build --workspace`。
+
+**第五步：启用 E 工作流**
+
+```powershell
+git checkout -b note/closures main
+# 写笔记 + 示例，示例放对应 edition crate
+git checkout main && git merge note/closures && git branch -d note/closures
+```
+
+---
+
+## 一句话总结
+
+**A 解决结构（冲突归零、笔记单一源、CI 全验证），E 解决工作流（分支即草稿），C 解决历史（tag 归档替代长期分支）。** 三者叠加后，你的仓库从“5 个长期分支 ×3 远端 + 链式 merge 手工维护”变成“1 个 main + 短命主题分支 + workspace 多包”，维护负担降到最低，且完全保留“每个 Edition 都能跑”的能力。
