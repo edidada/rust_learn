@@ -1,0 +1,8 @@
+[package]
+name = "e2024"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thread_local = { workspace = true }
+tokio = { workspace = true }

@@ -100,7 +100,7 @@ let division_results = numbers.iter().copied().map(|n| divide(n, 27));
 ## 2024
 
 最新 Edition：`unsafe` 属性强制化（如 `#[unsafe(no_mangle)]`）、`gen` 保留字、闭包捕获规则进一步简化、部分生命周期语法收紧。
-演示见 `src/bin/edition_2024.rs`（仅 2024 分支提供）。
+演示见 `crates/e2024/src/bin/edition_2024.rs`（`e2024` 包）。
 
 
 ```
@@ -118,9 +118,10 @@ Misc: BinaryHeap
 - **操作系统**: macOS Intel 12.7
 - **Rust版本**: 最新稳定版
 - **项目版本**: 0.1.0
-- **Edition**: 2024
+- **结构**: Cargo workspace，按 Edition 分 4 个包：`e2015` / `e2018` / `e2021` / `e2024`
+- **各包 Edition**: 2015 / 2018 / 2021 / 2024
 
-### 可执行文件列表 (共150个)
+### 可执行文件列表 (共153个：e2015×1、e2018×3、e2021×1、e2024×148)
 
 #### Collections模块 (8个)
 - `vec` - Vec集合演示
@@ -195,29 +196,27 @@ Rust关键字示例程序：
 
 ### Git分支信息
 
-项目包含以下分支，用于展示不同Rust Edition的特性：
-- `main` - 主分支
-- `master` - 备用主分支
-- `2024` - Rust 2024 Edition 特性
-- `2021` - Rust 2021 Edition 特性
-- `2018` - Rust 2018 Edition 特性
-- `2015` - Rust 2015 Edition 特性
+- `main` - 主分支（笔记与全部代码，Cargo workspace）
+- `note/<主题>` - 短命主题分支：从 main 切出，写完即合并删除（`note/**` 触发 CI）
+
+历史四条 Edition 分支已归档为 tag：`archive/edition-2015`、`archive/edition-2018`、
+`archive/edition-2021`、`archive/edition-2024`。回看：`git checkout -b look-2015 archive/edition-2015`，看完即删。
 
 ### 编译命令
 
 ```bash
-# 编译所有可执行文件
-cargo build --bins
+# 编译整个 workspace（4 个包，覆盖全部 Edition）
+cargo build --workspace
 
-# 编译并运行特定程序
+# 运行特定程序（bin 名全局唯一可省 -p；指定包更稳妥）
 cargo run --bin vec
-cargo run --bin keywords_async
-cargo run --bin basic_thread
+cargo run -p e2018 --bin keywords_async
+cargo run -p e2024 --bin basic_thread
 ```
 
-### 依赖项
-- `thread_local` = "1.1"
-- `tokio` = { version = "1.0", features = ["full"] }
+### 依赖项（根 Cargo.toml 的 workspace.dependencies）
+- `thread_local` = "1.1"（`e2024` 引用）
+- `tokio` = { version = "1.0", features = ["full"] }（`e2018`、`e2024` 引用）
 
 ---
 
@@ -228,17 +227,17 @@ cargo run --bin basic_thread
 ### 运行版本特性演示
 
 ```bash
-# Rust 2015 Edition - 基础特性
-cargo run --bin edition_2015
+# Rust 2015 Edition - 基础特性（e2015 包）
+cargo run -p e2015 --bin edition_2015
 
-# Rust 2018 Edition - 模块系统、async/await、dyn Trait
-cargo run --bin edition_2018
+# Rust 2018 Edition - 模块系统、async/await、dyn Trait（e2018 包）
+cargo run -p e2018 --bin edition_2018
 
-# Rust 2021 Edition - 闭包捕获、panic宏、数组IntoIterator
-cargo run --bin edition_2021
+# Rust 2021 Edition - 闭包捕获、panic宏、数组IntoIterator（e2021 包）
+cargo run -p e2021 --bin edition_2021
 
-# Rust 2024 Edition - 临时生命周期、宏改进、类型推断
-cargo run --bin edition_2024
+# Rust 2024 Edition - 临时生命周期、宏改进、类型推断（e2024 包）
+cargo run -p e2024 --bin edition_2024
 ```
 
 ### 各版本主要特性

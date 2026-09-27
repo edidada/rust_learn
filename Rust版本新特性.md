@@ -1,7 +1,7 @@
 # Rust Edition（版本）新增特性说明
 
 Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三年一版）；标准库与 Cargo 的能力则随编译器版本演进、对所有 Edition 通用。
-本仓库以四个分支对应四个 Edition，各分支持有对应 `edition` 值，并提供该版本特性的演示程序。
+本仓库以 Cargo workspace 分包对应四个 Edition：`crates/e2015`、`crates/e2018`、`crates/e2021`、`crates/e2024` 各持对应 `edition` 值，并提供该版本特性的演示程序。
 
 ## Rust 2015（Rust 1.0，2015-05）—— 基线版本
 
@@ -16,7 +16,7 @@ Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三�
 - **2015 风格模块系统**：`use` 以 crate 根为绝对路径；依赖库需 **`extern crate` 声明**（2018 起不再需要）
 - 无 `async/await`（异步需回调、线程等手动组合）；无 `dyn Trait`（当时用裸 trait object）
 
-演示：`cargo run --bin edition_2015`（四个分支均有）
+演示：`cargo run -p e2015 --bin edition_2015`
 
 ## Rust 2018（Rust 1.31，2018-12）
 
@@ -28,7 +28,7 @@ Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三�
 - **切片模式**：`[first, second, ..]`、`..=` 范围模式匹配
 - **非词法生命周期（NLL）**：借用按控制流计算，变量最后使用后即可修改/释放
 
-演示：`cargo run --bin edition_2018`（2018 及以上分支）
+演示：`cargo run -p e2018 --bin edition_2018`
 
 ## Rust 2021（Rust 1.56，2021-10）
 
@@ -40,7 +40,7 @@ Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三�
 - **保留 `|..|` 语法**：为未来闭包/迭代器扩展预留
 - **宏片段预留 `expr_2021`**：为未来 `expr` 片段的行为变更预留说明符
 
-演示：`cargo run --bin edition_2021`（2021 及以上分支）
+演示：`cargo run -p e2021 --bin edition_2021`
 
 ## Rust 2024（Rust 1.85，2025-02）
 
@@ -54,15 +54,15 @@ Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三�
 - **match 默认绑定模式修正**：`binding @ pattern` 处绑定模式重置，消除歧义
 - **never 类型（`!`）回落行为改进**
 
-演示：`cargo run --bin edition_2024`（仅 2024 分支）
+演示：`cargo run -p e2024 --bin edition_2024`
 
-## 演示文件与分支对照
+## 演示文件与包对照
 
-| Edition | 分支 | 演示文件 |
+| Edition | 包 | 演示文件 |
 |---|---|---|
-| 2015 | `2015`（其余分支同样具备） | `src/bin/edition_2015.rs` |
-| 2018 | `2018` 及以上 | `src/bin/edition_2018.rs` |
-| 2021 | `2021` 及以上 | `src/bin/edition_2021.rs` |
-| 2024 | 仅 `2024` | `src/bin/edition_2024.rs` |
+| 2015 | `e2015` | `crates/e2015/src/bin/edition_2015.rs` |
+| 2018 | `e2018` | `crates/e2018/src/bin/edition_2018.rs` |
+| 2021 | `e2021` | `crates/e2021/src/bin/edition_2021.rs` |
+| 2024 | `e2024` | `crates/e2024/src/bin/edition_2024.rs` |
 
-> 注：本文件位于 `main` 分支；随 `main → 2015 → 2018 → 2021 → 2024` 的合并链向上传播。
+> 注：本文件位于 `main`；历史 Edition 分支（2015/2018/2021/2024）已归档为 tag `archive/edition-*`。
