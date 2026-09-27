@@ -87,7 +87,7 @@ fn main() {
         println!("  VecDeque::range(2..4) 取 {}", v);
     }
     // Peekable::next_if：若下一元素满足谓词则取走，否则不消耗
-    let mut it = Peekable::new(vec![5, 1, 2].into_iter());
+    let mut it = vec![5, 1, 2].into_iter().peekable(); // Peekable 由 Iterator::peekable 构造（new 是私有构造器）
     println!("  next_if(>=5) -> {:?}", it.next_if(|&x| x >= 5));
     println!("  next_if(>=5) -> {:?}", it.next_if(|&x| x >= 5)); // None，1 未被消耗
     // array::IntoIter（1.51 稳定）：数组的按值迭代器

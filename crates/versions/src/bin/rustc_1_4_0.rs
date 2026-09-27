@@ -44,7 +44,7 @@ fn main() {
     println!("\n5. &Option 与 &Result 实现 IntoIterator");
     let o: Option<i32> = Some(3);
     let r: Result<i32, &str> = Ok(9);
-    println!("&Option -> {:?}, &Result -> {:?}", o.iter().collect::<Vec<_>>(), r.iter().collect::<Vec<i32>>());
+    println!("&Option -> {:?}, &Result -> {:?}", o.iter().collect::<Vec<_>>(), r.iter().collect::<Vec<&i32>>());
 
     println!("\n6. CStr::to_str / to_string_lossy 稳定化");
     use std::ffi::CString;

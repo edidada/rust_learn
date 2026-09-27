@@ -3,7 +3,7 @@ fn main() {
     println!("rustc 1.60.0 演示");
 
     // ============================================================
-    println!("\n1. Instant::{duration_since, elapsed, sub} 饱和而非 panic");
+    println!("\n1. Instant::duration_since/elapsed/sub 饱和而非 panic");
     // 1.60 起：结果为负（时钟回滑/倒序调用）时得 0，不再 panic。
     // 对比旧行为：duration_since(未来时间) 会 panic。
     use std::time::{Duration, Instant};
@@ -34,7 +34,7 @@ fn main() {
     // （未真退出程序；仅演示构造。真实 main 返回它时进程 exit code = 7）
 
     // ============================================================
-    println!("\n4. MaybeUninit::{assume_init_read, assume_init_drop}");
+    println!("\n4. MaybeUninit::assume_init_read / assume_init_drop");
     use std::mem::MaybeUninit;
     let mu: MaybeUninit<u64> = MaybeUninit::new(12345u64);
     // assume_init_read: 拷贝出初始化值（按值读）——避免 move out 语义

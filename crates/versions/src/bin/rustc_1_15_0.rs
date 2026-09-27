@@ -33,7 +33,7 @@ fn main() {
     println!("struct Token(); 既可 Token() 也可 Token {{}}（实例存在：{:?}）", std::mem::size_of_val(&t));
 
     println!("\n5. io::Take::into_inner（1.15 稳定）");
-    let reader = Cursor::new(b"abcdef");
+    let reader = Cursor::new(b"abcdef" as &[u8]); // 显式成 &[u8]，Take<Cursor<&[u8]>> 才与推断一致
     let mut limited: Take<Cursor<&[u8]>> = reader.take(3);
     let mut buf = [0_u8; 3];
     limited.read_exact(&mut buf).unwrap();

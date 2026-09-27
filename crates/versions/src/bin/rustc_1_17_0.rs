@@ -26,14 +26,12 @@ fn main() {
     println!("then_with 演示 = {:?}", Ordering::Equal.then_with(|| Ordering::Less));
 
     println!("\n4. BTreeMap::range（1.17 稳定）");
-    let mut scores = BTreeMap::new();
+    let mut scores: BTreeMap<&str, i32> = BTreeMap::new();
     for (k, v) in [("a", 60), ("b", 75), ("c", 90)] {
         scores.insert(k, v);
     }
-    let mid: Vec<(&str, i32)> = scores
-        .range((Bound::Included("a"), Bound::Included("b")))
-        .map(|(k, v)| (*k, *v))
-        .collect();
+    // T: ?Sized + Borrow 歧义：直接给 RangeInclusive，推断走 str（K=&str 经 Borrow<str>）
+    let mid: Vec<(&str, i32)> = scores.range("a"..="b").map(|(k, v)| (*k, *v)).collect();
     println!("range a..=b = {:?}", mid);
 
     println!("\n5. Rc::into_raw / from_raw / ptr_eq（1.17 稳定）");

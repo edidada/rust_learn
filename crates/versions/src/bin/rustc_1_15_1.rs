@@ -8,8 +8,9 @@ fn main() {
     let mut it = v.into_iter();
     println!("未消费时 as_slice = {:?}", it.as_slice());
     it.as_mut_slice()[0] = 100; // 原地改还没被消费的元素
-    println!("as_mut_slice 改首元素后 = {:?}，next() = {:?}", it.as_slice(), it.next());
-    println!("消费一个后 as_slice = {:?}", it.as_slice());
+    println!("as_mut_slice 改首元素后 = {:?}", it.as_slice());
+    let first = it.next();
+    println!("next() 取出 {:?}，剩余 as_slice = {:?}", first, it.as_slice());
 
     println!("\n2. builtins -fPIC 修复（println 讲解节）");
     // 当年形态：32 位平台上 compiler builtins 以 -fPIC 编译，

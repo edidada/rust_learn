@@ -4,18 +4,17 @@ use std::cmp::Reverse;
 fn main() {
     println!("rustc 1.19.0 演示");
 
-    println!("\n1. loop { break 值; }（RFC 1624，1.19 稳定）");
+    println!("\n1. loop 带 break 值（RFC 1624，1.19 稳定）");
     // 当年形态：1.18 及以前 loop 无法直接产出值，要用可变变量绕
     let found = loop {
         let mut i = 0;
         loop {
             i += 1;
             if i * i > 20 {
-                break i; // 内层 break 带值
+                break; // 内层循环只是退出（作为语句要求类型为 ()）
             }
         }
-        // 外层演示一次即可
-        break "done";
+        break i; // 外层 loop break 带值：i*i 已 > 20
     };
     println!("loop break 返回值 = {}", found);
     let mut counter = 0;
@@ -62,7 +61,8 @@ fn main() {
 
     println!("\n7. Command::envs（1.19 稳定）");
     // 批量给子进程设置环境变量；此处只构建命令不做跨平台执行
-    let cmd = std::process::Command::new("echo").envs([("FOO", "bar"), ("BAZ", "qux")]);
+    let mut cmd = std::process::Command::new("echo"); // 先绑定再链式，避免临时值被丢弃
+    cmd.envs([("FOO", "bar"), ("BAZ", "qux")]);
     println!("envs([(\"FOO\",\"bar\"),(\"BAZ\",\"qux\")]) 已挂到子进程命令（未执行）: {:?}", cmd);
 
     println!("\n8. eprintln!（1.19 加入 prelude）");

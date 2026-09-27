@@ -34,10 +34,11 @@ fn main() {
     let mut x3; let mut x4;
     [x3, x4] = list;
     println!("  [x,y] = [10,20] -> x={} y={}", x3, x4);
-    // 复合赋值也支持：逐元素加 1
+    // 注意：destructuring assignment 只支持普通 `=`，不支持 += 等复合运算符；
+    // 逐元素加 1 要写成对偶式的普通赋值：
     let (mut m, mut n) = (3, 4);
-    (m, n) += (1, 1);
-    println!("  (m, n) += (1, 1) -> m={} n={}", m, n);
+    (m, n) = (m + 1, n + 1);
+    println!("  (m, n) = (m+1, n+1) -> m={} n={}", m, n);
     // 注意：destructuring assignment 不引入新绑定，左侧变量须先前已声明。
 
     // ============================================================

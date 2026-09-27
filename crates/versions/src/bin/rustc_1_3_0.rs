@@ -19,7 +19,6 @@ fn main() {
     println!("1..=1000 累加 = {}，耗时 = {:?}", total, el);
 
     println!("\n3. Error 下转型 downcast_ref（1.3 稳定）");
-    use std::error::Error;
     let e = parse_int("10x").unwrap_err();
     // 动态地把 trait 对象还原为具体错误类型
     let as_conversion = e.downcast_ref::<std::num::ParseIntError>();
@@ -48,6 +47,6 @@ fn main() {
     println!("CString->CStr 借用成功：{:?}（Borrow/ToOwned 一般化于 trait bound 场景）", borrowed);
 }
 
-fn parse_int(s: &str) -> Result<i32, Box<dyn Error>> {
+fn parse_int(s: &str) -> Result<i32, Box<dyn std::error::Error>> {
     Ok(s.parse::<i32>()?)
 }

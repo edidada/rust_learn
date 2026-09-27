@@ -46,7 +46,7 @@ fn main() {
     println!("u8 Layout pad_to_align => {{ s: {} }}", padded.size());
     let (combo, offset) = l1.extend(l2).unwrap(); // 串联两布局，offset 是第二个的起始
     println!("extend(u8,u32)：总体 size = {}, u32 前偏移 = {}", combo.size(), offset);
-    let arr_l = Layout::new::<u32>().array(7).unwrap(); // 7 个 u32 连续布局
+    let arr_l = Layout::array::<u32>(7).unwrap(); // 关联函数 Layout::array::<T>(n)：7 个 u32 连续布局
     println!("array(7 of u32) => size = {}", arr_l.size());
     let aligned = l1.align_to(16).unwrap();
     println!("align_to(16) => align = {}", aligned.align()); // 最高 16

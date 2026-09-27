@@ -7,11 +7,13 @@ fn main() {
     let f: Box<dyn FnOnce() -> i32> = Box::new(|| 1 + 2);
     println!("Box<dyn FnOnce()>() = {}", f()); // 旧版要写 (*f)()
     let mut count = 0;
-    let mut g: Box<dyn FnMut()> = Box::new(|| count += 1);
-    g();
-    g();
+    {
+        let mut g: Box<dyn FnMut()> = Box::new(|| count += 1);
+        g();
+        g();
+    } // g 在此释放，count 的可变借用结束
     println!("Box<dyn FnMut()>() 调用两次后 count = {}", count);
-    let h: Box<dyn Fn() -> &str> = Box::new(|| "hello from boxed closure");
+    let h: Box<dyn Fn() -> &'static str> = Box::new(|| "hello from boxed closure");
     println!("Box<dyn Fn()>() = {}", h());
 
     // 1.35.0 引入：闭包可以直接强制转换（coerce）为 unsafe fn 指针，
@@ -25,7 +27,7 @@ fn main() {
         println!("[hook called]");
     }
     let reg = Registrar {
-        hooks: vec![log_hook, || log_hook()], // 第二个就是闭包强转成 unsafe fn
+        hooks: vec![log_hook, || unsafe { log_hook() }], // 第二个就是闭包强转成 unsafe fn（edition 2024 需显式 unsafe 块）
     };
     unsafe {
         for hook in &reg.hooks {

@@ -5,7 +5,7 @@ fn main() {
     println!("rustc 1.6.0 演示");
 
     println!("\n1. Read::read_exact（1.6 稳定，读不满则报错）");
-    let src: &[u8] = b"hello world";
+    let mut src: &[u8] = b"hello world"; // Read for &[u8]：read_exact 需要 &mut self
     let mut buf = [0_u8; 5];
     src.read_exact(&mut buf).unwrap();
     println!("read_exact 读到 {:?}", String::from_utf8_lossy(&buf));

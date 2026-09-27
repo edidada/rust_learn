@@ -33,12 +33,12 @@ fn main() {
 
     // ============================================================
     println!("\n4. OsString 实现 Extend / FromIterator");
-    use std::ffi::OsString;
-    // 拼接路径/字节串更顺手：不保证 UTF-8 也能收
+    use std::ffi::{OsStr, OsString};
+    // 拼接路径/字节串更顺手：不保证 UTF-8 也能收（1.52 起实现 Extend/FromIterator）
     let mut os = OsString::from("C:\\");
-    os.extend(["Users", "\\me"].iter());
+    os.extend([OsStr::new("Users"), OsStr::new("\\me")]); // 元素类型 &OsStr
     println!("  OsString Extend -> {:?}", os);
-    let joined: OsString = ["a", "b"].iter().collect();
+    let joined: OsString = [OsString::from("a"), OsString::from("b")].into_iter().collect(); // 元素 OsString
     println!("  OsString FromIterator -> {:?}", joined);
 
     // ============================================================

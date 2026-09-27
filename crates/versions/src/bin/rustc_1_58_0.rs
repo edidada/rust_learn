@@ -28,10 +28,10 @@ fn main() {
     println!("  File::options().read(true) 构造成功 = true");
 
     // ============================================================
-    println!("\n3. {integer}::saturating_div");
+    println!("\n3. saturating_div（整型）");
     // 1.58 稳定：除法溢出（i32::MIN / -1）时饱和成 i32::MAX 而不 panic。
     println!("  (i32::MIN).saturating_div(-1) = {}", i32::MIN.saturating_div(-1));
-    println!("  7.saturating_div(2) = {}", 7.saturating_div(2));
+    println!("  7.saturating_div(2) = {}", 7_i32.saturating_div(2));
     // 普通除法此情形是 panic:（println 讲解，不真除零）
 
     // ============================================================

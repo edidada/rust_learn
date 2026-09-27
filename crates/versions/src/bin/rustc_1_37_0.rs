@@ -19,10 +19,10 @@ fn main() {
     // 1.37.0 引入：`_` 可以作为 const 的名字，匿名声明的 const 常用于编译期断言。
     println!("\n2. const _ 匿名常量");
     const _INNER_ASSERT: usize = std::mem::size_of::<u32>(); // 旧版这里的标识符必须有名字
-    const _STATIC_ASSERT: () = assert_type_is_copy::<u8>();
-    println!("const _ 形式例如 `const _: u32 = 5;`；编译期求值，运行期无痕迹（这里 size_of::<u32>() = {}）",
-        _INNER_ASSERT);
-    println!("上面 const _STATIC_ASSERT 也是一个编译期断言：确保 u8 是 Copy 然后丢弃");
+    // 编译期断言写法：const _: () = if ... { panic!() };（1.98 的 const fn 已可做更多事，
+    // 当时常用 `const _: () = assert!(...)` 或自定义 const fn 断言，例如：
+    const _: () = assert!(std::mem::size_of::<u32>() == 4);
+    const _: () = assert!(std::mem::size_of::<u32>() == 4); // 故意重复演示 const _ 的"可声明多个"
 
     // 1.37.0 稳定：Option::xor —— "恰好一个为 Some" 语义（类似 bool 的 XOR）。
     println!("\n3. Option::xor");
@@ -53,5 +53,3 @@ fn main() {
     reader.read_exact(&mut first).unwrap();
     println!("读了 3 字节后，BufReader::buffer() 剩余缓冲 = {:?}", reader.buffer());
 }
-
-fn assert_type_is_copy<T: Copy>() {}

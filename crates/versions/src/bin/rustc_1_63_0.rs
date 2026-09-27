@@ -9,7 +9,8 @@ fn main() {
     let mut numbers = vec![1, 2, 3, 4, 5];
     std::thread::scope(|s| {
         // 两半分别用两个线程并发求和处理（借用同一 vec 的不同 parts）
-        let (left, right) = numbers.split_at_mut(numbers.len() / 2);
+        let mid = numbers.len() / 2; // 先取长度，避免与 split_at_mut 的可变借用纠缠
+        let (left, right) = numbers.split_at_mut(mid);
         s.spawn(|| {
             left[0] += 10; // 直接借用 &mut 
         });

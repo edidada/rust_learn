@@ -13,12 +13,12 @@ fn main() {
     // 默认算术不允许溢出；想回绕必须显式写。1.2 补齐了 div/rem/neg/shl/shr。
     let a = i32::MIN;
     let quo = a.wrapping_div(-1); // 溢出但按二进制补码回绕
-    let rem = (-7).wrapping_rem(3);
+    let rem = (-7_i32).wrapping_rem(3);
     let shl = 1_u8.wrapping_shl(9); // shl 位数超宽，回绕到 1
     let neg = 0_u8.wrapping_neg();
     println!("i32::MIN/(-1) 回绕 = {}, -7%%3 = {}, 1<<9(u8) = {}, 0 翻转 = {}", quo, rem, shl, neg);
 
-    println!("\n3. {:#?} 替代形式的 pretty-print Debug");
+    println!("\n3. {{:#?}} 替代形式的 pretty-print Debug");
     let nested = vec![vec![1, 2], vec![3, 4]];
     println!("{:#?}", nested);
 

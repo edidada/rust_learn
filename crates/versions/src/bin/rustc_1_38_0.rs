@@ -28,11 +28,11 @@ fn main() {
     println!("from_secs_f64(0.75) = {:?}", restored);
 
     // 1.38.0 变更：slice::join（及 concat/connect）现在除 &T 外也接受 &[T] 切片元素。
-    println!("\n4. slice::{join} 接受 &[T]");
+    println!("\n4. slice::join 接受 &[T]");
     let pieces: &[&[&str]] = &[&["a", "b"], &["c"]];
     let flat: Vec<&str> = pieces.concat(); // concat 本身在 1.38 支持 &[T] 元素
     println!("slice concat → {:?}", flat);
-    let joined: String = pieces.concat().join("-");
+    let joined: String = flat.join("-");
     println!(" joined(\"-\")            = \"{}\"", joined);
 
     // 1.38.0 稳定：<*const T>::cast —— 隐式转换到任意 usize 大小的裸指针类型（替代强转 as *const X）。

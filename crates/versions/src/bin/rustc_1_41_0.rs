@@ -1,5 +1,5 @@
 // rustc 1.41.0 演示 —— map_or/else / 嵌套 receiver / NonZero 窄化 From / Weak 计数 / MaybeUninit Debug
-use std::num::NonZeroU8;
+use std::num::{NonZeroU16, NonZeroU8};
 use std::rc::{Rc, Weak};
 
 fn main() {
@@ -35,7 +35,7 @@ fn main() {
     println!("NonZeroU16::from(NonZeroU8(3)) = {}", nz16.get());
 
     // 1.41.0 稳定：std::rc::Weak::{strong_count, weak_count}。
-    println!("\n4. Weak::{strong_count, weak_count}");
+    println!("\n4. Weak::strong_count / weak_count");
     let strong = Rc::new(1);
     let weak: Weak<i32> = Rc::downgrade(&strong);
     println!("strong_count = {}, weak_count = {}（仅弱引用）",

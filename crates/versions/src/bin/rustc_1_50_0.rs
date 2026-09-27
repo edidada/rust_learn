@@ -18,7 +18,7 @@ fn main() {
     println!("\n2. bool::then —— 条件成立才计算/产出 Some");
     // 1.50 稳定 bool::then：true -> Some(f())，false -> None（惰性求值）。
     // 对比旧写法：if x > 0 { Some(x * 2) } else { None }
-    let x = 3;
+    let x: i32 = 3; // 显式标注：is_positive/is_negative 是具体整型方法
     let v = x.is_positive().then(|| x * 2);
     println!("  x.is_positive().then(|| x*2) -> {:?}", v);
     let v2 = x.is_negative().then(|| x * 2);

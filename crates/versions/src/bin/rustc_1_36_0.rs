@@ -14,14 +14,16 @@ fn main() {
     let mut cx = Context::from_waker(&waker);
     // CounterFuture 不实现 Unpin，用 Pin<&mut _> 轮询（futures 0.1 时代是 poll_mut）
     let mut pinned = Pin::new(&mut counter);
+    let mut polls = 0; // 用局部计数打印，避免与 pinned 的可变借用冲突
     loop {
+        polls += 1;
         match pinned.as_mut().poll(&mut cx) {
             Poll::Ready(n) => {
-                println!("Future 完成，共被轮询 {} 次，返回 {}", counter.polled, n);
+                println!("Future 完成，共被轮询 {} 次（Output 即计数值 {}）", polls, n);
                 break;
             }
             Poll::Pending => {
-                println!("Poll::Pending，第 {} 次，继续轮询（真实运行时这里会挂起等待 waker）", counter.polled);
+                println!("Poll::Pending，第 {} 次，继续轮询（真实运行时这里会挂起等待 waker）", polls);
             }
         }
     }
@@ -34,7 +36,7 @@ fn main() {
 
     println!("\n3. Iterator::copied");
     let refs: Vec<&u8> = vec![&1, &2, &3];
-    let owned: Vec<u8> = refs.iter().copied().collect(); // 1.36 稳定，等价 .cloned()，但语义限定 Copy
+    let owned: Vec<u8> = refs.into_iter().copied().collect(); // 1.36 稳定，等价 .cloned()，但语义限定 Copy
     println!("&[&1,&2,&3].iter().copied() = {:?}", owned);
 
     println!("\n4. VecDeque::rotate_left / rotate_right");

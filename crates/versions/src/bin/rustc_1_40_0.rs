@@ -40,7 +40,7 @@ fn main() {
     println!("take 后 buf = {:?}，拿到的 = {:?}", buf, got);
 
     // 1.40.0 稳定：Option::as_deref / Option::flatten。
-    println!("\n3. Option::{as_deref, flatten}");
+    println!("\n3. Option::as_deref / Option::flatten");
     let owned: Option<String> = Some(String::from("borrow me"));
     let borrowed: Option<&str> = owned.as_deref(); // Option<String>（调 Deref）→ Option<&str>
     println!("Some(String).as_deref() = {:?}", borrowed);

@@ -16,9 +16,9 @@ fn main() {
     map.insert(1, "a");
     map.insert(2, "b");
     map.insert(3, "c");
-    let greater = map.split_off(&2); // >= 2 的键分走
+    let mut greater = map.split_off(&2); // >= 2 的键分走（append 需要 &mut Self）
     println!("原 map = {:?}，split_off(&2) = {:?}", map, greater);
-    map.append(greater); // 又并回来（移动元素）
+    map.append(&mut greater); // 又并回来（签名是 &mut Self，移动元素）
     println!("append 后 map = {:?}", map);
 
     println!("\n3. Cell::get_mut / RefCell::get_mut（需 &mut 引用，免运行时检查）");
@@ -26,15 +26,13 @@ fn main() {
     *cell.get_mut() += 1;
     println!("Cell 经 get_mut 改成 {}", cell.get());
     let mut rc = RefCell::new(vec![1, 2]);
-    if let Some(v) = rc.get_mut() {
-        v.push(3);
-    }
+    rc.get_mut().push(3); // get_mut() 返回 RefMut（borrow_mut 等价），仅当无其他借用时才可调用
     println!("RefCell 经 get_mut 改成 {:?}", rc.borrow());
 
     println!("\n4. BinaryHeap::append");
     let mut h1: BinaryHeap<i32> = [3, 1].into();
-    let h2: BinaryHeap<i32> = [5, 4].into();
-    h1.append(h2);
+    let mut h2: BinaryHeap<i32> = [5, 4].into();
+    h1.append(&mut h2); // 签名 &mut Self：元素从 h2 移动进 h1
     println!("合并后 peek = {:?}", h1.peek());
 
     println!("\n5. assert_eq! 自定义消息（1.11 起对齐 assert!）");

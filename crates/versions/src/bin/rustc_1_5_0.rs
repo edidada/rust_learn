@@ -60,7 +60,7 @@ fn main() {
 
     println!("\n9. 无损 From 整型↔浮点转换");
     let small: f32 = 200_u8.into(); // u8 → f32 无损
-    let big: f64 = 64_i64.into(); // i64 → f64 无损
+    let big: f64 = 64_u32.into(); // u32 → f64 无损（i64→f64 无 From impl，浮点转换有精度取舍）
     let widen: f64 = 0.5_f32.into();
     println!("u8→f32 = {}, i64→f64 = {}, f32→f64 = {}", small, big, widen);
 }

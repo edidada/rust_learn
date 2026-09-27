@@ -61,9 +61,9 @@ fn main() {
     use std::num::{NonZeroI32, NonZeroU32};
     let nz: NonZeroU32 = NonZeroU32::new(3).unwrap();
     println!(
-        "  NonZeroU32 3.checked_mul(2) = {:?}，saturating_mul(u32::MAX) = {}",
-        nz.checked_mul(2),
-        NonZeroU32::MAX.saturating_mul(2).get()
+        "  NonZeroU32 3.checked_mul(2) = {:?}，saturating_mul(2) = {}",
+        nz.checked_mul(NonZeroU32::new(2).unwrap()),
+        NonZeroU32::MAX.saturating_mul(NonZeroU32::new(2).unwrap()).get()
     );
     let ni: NonZeroI32 = NonZeroI32::new(-5).unwrap();
     println!("  NonZeroI32(-5).abs() = {}, unsigned_abs = {}", ni.abs(), ni.unsigned_abs());

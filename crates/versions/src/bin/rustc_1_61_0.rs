@@ -14,10 +14,11 @@ fn main() -> std::process::ExitCode {
     }
     const M: usize = modulus::<5>(12); // 12 % 5 = 2
     println!("  modulus::<5>(12) = {}（const 泛型参数在 const fn 中工作）", M);
-    // (b) 函数指针在 const fn / const 上下文里创建、cast、传递：
+    // (b) 函数指针在 const fn / const 上下文里创建：1.61 允许 const 里存函数指针，
+    //     但"调用函数指针"当时仍是 E0015（后续版本才放开），这里只演示创建与打印：
     const FN_PTR: fn(u32) -> u32 = double;
-    const DOUBLED: u32 = FN_PTR(21);
-    println!("  const 函数指针调用 double(21) = {}", DOUBLED);
+    let runtime = FN_PTR(21);
+    println!("  const 定义的函数指针（运行期调用 double(21)）= {}", runtime);
     // (c) impl Trait 参数/返回位置、递归设置 opaque 返回值（println 讲解）：
     println!("  impl Trait 参数/返回位置的 const fn、递归设置 opaque 返回值也已允许。");
 

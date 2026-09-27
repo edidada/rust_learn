@@ -37,8 +37,8 @@ fn main() {
     let p = slot.write(42);
     println!("  MaybeUninit::write(42) 后读 = {}", unsafe { *p });
     // assume_init_ref / assume_init_mut：对已初始化内存取引用（本例通过 write 保证初始化）
-    let rf: &[u32] = unsafe { slot.assume_init_ref() };
-    println!("  assume_init_ref()[0] = {}", rf[0]);
+    let rf: &u32 = unsafe { slot.assume_init_ref() }; // 对单值返回 &u32
+    println!("  assume_init_ref() = {}", rf);
 
     // ============================================================
     println!("\n5. 兼容性提醒（println 讲解）");
