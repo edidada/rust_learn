@@ -32,6 +32,14 @@ fn main() {
     // 7. 函数指针和闭包改进
     println!("\n7. 函数指针改进");
     function_pointer_demo();
+
+    // 8. 其他改进（NLL 非词法生命周期等）
+    println!("\n8. 其他改进 (NLL 非词法生命周期)");
+    other_improvements();
+
+    // 9. 嵌套分组导入与路径式宏导入
+    println!("\n9. 嵌套分组导入与宏导入 (Grouped & Macro Imports)");
+    grouped_import_demo();
 }
 
 // 1. 模块系统改进
@@ -47,7 +55,7 @@ fn module_system_demo() {
 // Rust 2018引入了async/await关键字（虽然稳定版稍晚）
 fn async_demo() {
     println!("   async fn - 定义异步函数");
-    println!("   await! - 等待异步操作完成");
+    println!("   .await - 等待异步操作完成（后缀语法，不是宏）");
     println!("   为异步编程提供语法糖");
 
     // 示例代码（需要async运行时）
@@ -91,14 +99,22 @@ fn dyn_trait_demo() {
 // 4. 匿名生命周期 '_
 fn anonymous_lifetime_demo() {
     // 在Rust 2018中，'_ 可以用作匿名生命周期
-    fn _foo(_: &str) -> &str {
+    fn _foo(_: &'_ str) -> &'_ str {
         ""
     }
 
-    // 结构体中的匿名生命周期
+    // 结构体定义仍需显式命名生命周期（'_ 不能作为结构体参数名），
+    // 但 impl 块可用 '_ 省略：
     struct _Parser<'a> {
         input: &'a str,
     }
+    impl _Parser<'_> {
+        fn peek(&self) -> &str {
+            self.input
+        }
+    }
+    let parser = _Parser { input: "hello" };
+    println!("   impl _Parser<'_> 的 peek(): {}", parser.peek());
 
     println!("   '_ 用于省略显式生命周期参数");
     println!("   简化生命周期标注");
@@ -149,20 +165,45 @@ fn function_pointer_demo() {
 }
 
 // 其他Rust 2018改进
-#[allow(dead_code)]
 fn other_improvements() {
     // 1. 非词法生命周期 (NLL)
     // 改进了借用检查器，允许更多有效的代码
     let mut x = 5;
     let y = &x;
-    println!("{}", y);
+    println!("   y 引用 x: {}", y);
     // 这里y不再被使用，所以可以改变x
-    x = 6; // 在Rust 2015中这会报错
-    println!("{}", x);
+    x = 6; // 在Rust 2015中这会报错（NLL之前借用需持续到作用域结束）
+    println!("   NLL: y 不再使用后修改 x 成功, x = {}", x);
 
     // 2. 统一路径
     // 统一了use语句中的路径语法
 
     // 3. 常量泛型（预览）
     // 允许在泛型中使用常量值
+}
+
+// 9. 嵌套分组导入与路径式宏导入
+// Rust 2018：use 支持 {} 分组；宏可像函数一样按路径 use 导入（1.30+），
+// 取代 2015 的 #[macro_use] extern crate 惯例
+fn grouped_import_demo() {
+    // 分组导入：一个 use 引入同一路径下的多个名字
+    use std::collections::{BTreeMap, HashMap, HashSet};
+
+    let mut map: HashMap<&str, i32> = HashMap::new();
+    map.insert("rust", 2018);
+    let mut set: HashSet<&str> = HashSet::new();
+    set.insert("rust");
+    let btree: BTreeMap<&str, i32> = BTreeMap::new();
+    println!(
+        "   分组导入 HashMap/HashSet/BTreeMap: {} {} {}",
+        map.len(),
+        set.len(),
+        btree.len()
+    );
+
+    // 路径式宏导入：直接 use 宏的定义路径
+    use std::dbg;
+    let version = 2018;
+    dbg!(version);
+    println!("   use std::dbg 导入宏并调用成功（dbg 输出见上方 stderr）");
 }
