@@ -2,6 +2,11 @@
 //!
 //! Rust 2015是Rust的第一个稳定版本（1.0），于2015年5月发布。
 
+// 2015 风格：依赖库需要 extern crate 声明，并可用 as 重命名（2015 重命名第三方依赖的常见做法）。
+// std 已由编译器默认注入，直接 `extern crate std;` 会重复定义，故用 as 绑定新名字。
+// 2018 起 extern crate 不再必需，直接 use 路径即可。
+extern crate std as rust_std;
+
 fn main() {
     println!("=== Rust 2015 Edition 特性 ===\n");
 
@@ -32,6 +37,14 @@ fn main() {
     // 7. 宏系统
     println!("\n7. 宏系统 (Macros)");
     macro_demo();
+
+    // 8. 模块系统（2015 风格）
+    println!("\n8. 模块系统 (Modules, 2015 风格)");
+    module_system_demo();
+
+    // 9. macro_rules! 声明宏
+    println!("\n9. macro_rules! 声明宏 (Declarative Macros)");
+    macro_rules_demo();
 }
 
 // 1. 所有权系统演示
@@ -157,4 +170,42 @@ fn macro_demo() {
     // format! 宏
     let s = format!("Hello, {}!", "Rust 2015");
     println!("   format! 宏: {}", s);
+}
+
+// 8. 模块系统演示（2015 风格）
+fn module_system_demo() {
+    // 2015：use 路径以 crate 根为绝对路径，可显式以 :: 开头
+    // 通过顶部 `extern crate std as rust_std;` 重命名后的名字访问
+    use ::rust_std::collections::HashMap;
+
+    let mut ages: HashMap<&str, u32> = HashMap::new();
+    ages.insert("Rust 2015", 2015);
+    println!("   extern crate 重命名 + 绝对路径导入: {:?}", ages);
+
+    // 2015：第三方依赖需 extern crate 声明（见文件顶部）
+    // 2018 起 extern crate 不再必需
+    println!("   extern crate 是 2015 的标志性语法，2018 起可省略");
+}
+
+// 9. macro_rules! 声明宏演示
+// 2015 中导入外部 crate 的宏用 #[macro_use] extern crate，本宏定义在同一文件内直接可用
+macro_rules! describe {
+    ($value:expr) => {
+        println!("   macro_rules! 宏展开: {} 是 {} 的演示", $value, "Rust 2015")
+    };
+}
+
+fn macro_rules_demo() {
+    describe!("所有权、借用与生命周期");
+
+    let sum = 1 + 2;
+    let computed = {
+        macro_rules! add {
+            ($a:expr, $b:expr) => {
+                $a + $b
+            };
+        }
+        add!(sum, 10)
+    };
+    println!("   宏作为表达式: 1 + 2 + 10 = {}", computed);
 }
