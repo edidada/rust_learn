@@ -64,19 +64,17 @@ fn closure_capture_demo() {
 
 // 2. panic! 宏一致性
 fn panic_macro_demo() {
-    // Rust 2021统一了panic!宏的行为
+    // Rust 2021 让 panic! 与 format! 的行为完全一致：
+    // - 单参数时必须是字符串字面量（旧版可传任意表达式作为 panic 载荷）
+    // - 格式化新旧语法都有效：旧式 "{}" 位置参数、新式 "{value}" 内联捕获
 
-    // 在Rust 2021中，panic!只接受字符串字面量
-    // panic!("简单的panic消息");
+    // panic!("简单的panic消息"); // 单参：必须是字面量
+    let value = 42;
+    // panic!("值是: {}", value); // 旧式语法，仍然有效、无警告
+    // panic!("值是: {value}");   // 新式内联捕获，2021 起推荐、更简洁
 
-    // 如果需要格式化，必须使用format!
-    let _value = 42;
-    // panic!("值是: {}", value); // 在Rust 2021中会警告
-    // 应该使用:
-    // panic!("值是: {value}", value = value);
-
-    println!("   panic!宏行为更加一致");
-    println!("   推荐使用panic!(\"消息{{value}}\", value = value)形式");
+    println!("   panic! 宏与 format! 行为一致，新旧格式化语法均可");
+    println!("   推荐使用 panic!(\"消息 {value}\") 形式，更简洁");
 }
 
 // 3. 数组实现IntoIterator
@@ -139,9 +137,7 @@ fn format_string_demo() {
 fn prelude_demo() {
     // Rust 2021的std::prelude增加了一些常用类型
 
-    // TryFrom和TryTrait现在更容易使用
-    use std::convert::TryFrom;
-
+    // TryFrom/TryInto 自 Rust 2021 起已加入 std prelude，无需手动导入
     let num = i32::try_from(100i64);
     match num {
         Ok(n) => println!("   转换成功: {}", n),

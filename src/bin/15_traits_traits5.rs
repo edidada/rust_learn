@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 trait SomeTrait {
     fn some_function(&self) -> bool {
         true
@@ -41,6 +40,8 @@ fn main() {
     println!("OtherStruct: {}", result2);
     
     // 创建一个只实现 SomeTrait 的结构体
+    // （演示：未实现 OtherTrait 的类型无法传给 some_func）
+    #[allow(dead_code)]
     struct OnlySomeStruct;
     impl SomeTrait for OnlySomeStruct {}
     
