@@ -36,6 +36,10 @@ fn main() {
     // 8. 其他改进（NLL 非词法生命周期等）
     println!("\n8. 其他改进 (NLL 非词法生命周期)");
     other_improvements();
+
+    // 9. 嵌套分组导入与路径式宏导入
+    println!("\n9. 嵌套分组导入与宏导入 (Grouped & Macro Imports)");
+    grouped_import_demo();
 }
 
 // 1. 模块系统改进
@@ -176,4 +180,30 @@ fn other_improvements() {
 
     // 3. 常量泛型（预览）
     // 允许在泛型中使用常量值
+}
+
+// 9. 嵌套分组导入与路径式宏导入
+// Rust 2018：use 支持 {} 分组；宏可像函数一样按路径 use 导入（1.30+），
+// 取代 2015 的 #[macro_use] extern crate 惯例
+fn grouped_import_demo() {
+    // 分组导入：一个 use 引入同一路径下的多个名字
+    use std::collections::{BTreeMap, HashMap, HashSet};
+
+    let mut map: HashMap<&str, i32> = HashMap::new();
+    map.insert("rust", 2018);
+    let mut set: HashSet<&str> = HashSet::new();
+    set.insert("rust");
+    let btree: BTreeMap<&str, i32> = BTreeMap::new();
+    println!(
+        "   分组导入 HashMap/HashSet/BTreeMap: {} {} {}",
+        map.len(),
+        set.len(),
+        btree.len()
+    );
+
+    // 路径式宏导入：直接 use 宏的定义路径
+    use std::dbg;
+    let version = 2018;
+    dbg!(version);
+    println!("   use std::dbg 导入宏并调用成功（dbg 输出见上方 stderr）");
 }
