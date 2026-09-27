@@ -56,6 +56,38 @@ Rust 以 **Edition** 为单位发布语言层面的不兼容变更（约每三�
 
 演示：`cargo run -p e2024 --bin edition_2024`
 
+## 按 rustc 版本的特性时间线（类比 Java 8/11/14、C++ 11/17）
+
+新语法与新库能力随**编译器版本**发布，**所有 Edition 通用**；只有"旧行为开关"归 Edition 管（见上）。按 Java 8/11/14、C++11/17 的习惯，收录各版本**教学价值最高**的主特性：
+
+| rustc | 发布 | 特性（节选） |
+|---|---|---|
+| 1.0 | 2015-05 | 1.0 首发与稳定承诺：所有权/借用/生命周期/trait/宏基线成型 |
+| 1.31 | 2018-12 | Edition 2018 同步发布：模块系统改进（`crate::` / `self::` / `super::`） |
+| 1.36 | 2019-07 | `std::future::Future` 进入标准库 |
+| 1.39 | 2019-11 | `async` / `.await` 语法稳定（**全 Edition 可用**） |
+| 1.46 | 2020-08 | `const fn` 增强：可写 `if` / `match` / `while` / `loop` |
+| 1.51 | 2021-03 | const generics（MVP）：`struct Arr<T, const N: usize>` |
+| 1.56 | 2021-10 | Edition 2021 同步发布 |
+| 1.65 | 2022-11 | `let-else` 语句；GATs（泛型关联类型） |
+| 1.70 | 2023-06 | `std::io::IsTerminal`；crates.io sparse 协议默认 |
+| 1.75 | 2023-12 | RPITIT（trait 方法返回 `impl Trait`）；trait 中稳定 `async fn` |
+| 1.79 | 2024-06 | inline const：`const { ... }` 用于表达式位置 |
+| 1.80 | 2024-07 | `LazyLock` / `LazyCell` 稳定（静态延迟初始化） |
+| 1.82 | 2024-10 | `&raw const/mut` 裸指针语法；`unsafe extern` 块全 Edition 稳定 |
+| 1.83 | 2024-11 | const 内允许可变引用/指针（const 能力进一步增强） |
+| 1.85 | 2025-02 | Edition 2024 同步发布；`gen` 保留、`let chains` 仅 2024 版 |
+| 1.87 | 2025-05 | `asm!` goto 分支；RPITIT 支持精确捕获 `use<...>` |
+| 1.89 | 2025-08 | 显式推断 const 泛型参数（`Foo<_>`）；`#[repr(i128/u128)]`；`mismatched_lifetime_syntaxes` lint |
+| 1.90 | 2025-09 | x86_64 Linux 默认 lld；`cargo publish` 支持多包 |
+| 1.92 | 2025-12 | safe 代码 `&raw` union 字段；`Box/Rc/Arc::new_zeroed` |
+| 1.93 | 2026-01 | C 风格变参函数声明；`unchecked_neg/shl/shr`；`[T]::as_array` |
+| 1.94 | 2026-03 | 标准库宏改经 prelude 导入；`LazyLock::get`；`[T]::array_windows` |
+| 1.96 | 2026-05 | `{core,std}::derive` 稳定 |
+| 1.98 | 2026-08 | `str::substr_range` / `strip_circumfix`；`Atomic<T>::from_mut`（**本仓当前工具链**） |
+
+> 日期与条目以 [releases.rs](https://releases.rs) 与 [Rust Blog](https://blog.rust-lang.org) 为准；只收录主特性，lint/平台/Cargo 细节未列全。
+
 ## 演示文件与包对照
 
 | Edition | 包 | 演示文件 |
