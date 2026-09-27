@@ -24,7 +24,7 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
     // 先解构取出两半，避免闭包整体捕获 q 导致部分移动错误
     let Queue { first_half, second_half } = q;
 
-    thread::spawn(move || {
+    let handle1 = thread::spawn(move || {
         for val in first_half {
             println!("Sending {val:?}");
             tx.send(val).unwrap();
@@ -32,13 +32,17 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) {
         }
     });
 
-    thread::spawn(move || {
+    let handle2 = thread::spawn(move || {
         for val in second_half {
             println!("Sending {val:?}");
             tx2.send(val).unwrap();
             thread::sleep(Duration::from_millis(250));
         }
     });
+
+    // 等待两个线程结束，确保资源及时清理、panic 能传播回调用方
+    handle1.join().unwrap();
+    handle2.join().unwrap();
 }
 
 fn main() {

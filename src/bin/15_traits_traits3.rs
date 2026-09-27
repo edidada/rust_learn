@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 trait Licensed {
     // TODO: Add a default implementation for `licensing_info` so that
     // implementors like the two structs below can share that default behavior
@@ -9,10 +8,12 @@ trait Licensed {
     }
 }
 
+#[allow(dead_code)] // version_number 仅构造、不读取，属练习占位字段
 struct SomeSoftware {
     version_number: i32,
 }
 
+#[allow(dead_code)] // version_number 仅构造、不读取，属练习占位字段
 struct OtherSoftware {
     version_number: String,
 }

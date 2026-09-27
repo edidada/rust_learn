@@ -10,6 +10,8 @@ tokio = { version = "1.0", features = ["full"] }
 # 以下 bin 使用 2018+ 才支持的语法（async/await、免 extern crate 的 crate 路径），
 # 在 2015 分支保持注释；2018 及以上分支取消注释启用。
 # 规则：低版本分支注释掉，高版本分支取消注释。
+# 其余练习无需在此登记 [[bin]]：src/bin/ 下的 *.rs 由 Cargo 自动发现
+# （autobins），bin 名即文件名，cargo run --bin <名称> 照常可用。
 
 [[bin]]
 name = "keywords_async"

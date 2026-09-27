@@ -1,11 +1,12 @@
-#![allow(dead_code)]
 #[derive(Debug)]
+#[allow(dead_code)] // 字段仅经 derive(Debug) 输出，显式读取场景留给练习
 struct Point {
     x: u64,
     y: u64,
 }
 
 #[derive(Debug)]
+#[allow(dead_code)] // 各变体字段仅经 derive(Debug) 输出，显式读取场景留给练习
 enum Message {
     // TODO: Define the different variants used below.
     Resize { width: u32, height: u32 },       // 结构体变体，有命名字段

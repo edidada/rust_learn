@@ -32,6 +32,10 @@ fn main() {
     // 7. 函数指针和闭包改进
     println!("\n7. 函数指针改进");
     function_pointer_demo();
+
+    // 8. 其他改进（NLL 非词法生命周期等）
+    println!("\n8. 其他改进 (NLL 非词法生命周期)");
+    other_improvements();
 }
 
 // 1. 模块系统改进
@@ -47,7 +51,7 @@ fn module_system_demo() {
 // Rust 2018引入了async/await关键字（虽然稳定版稍晚）
 fn async_demo() {
     println!("   async fn - 定义异步函数");
-    println!("   await! - 等待异步操作完成");
+    println!("   .await - 等待异步操作完成（后缀语法，不是宏）");
     println!("   为异步编程提供语法糖");
 
     // 示例代码（需要async运行时）
@@ -91,14 +95,22 @@ fn dyn_trait_demo() {
 // 4. 匿名生命周期 '_
 fn anonymous_lifetime_demo() {
     // 在Rust 2018中，'_ 可以用作匿名生命周期
-    fn _foo(_: &str) -> &str {
+    fn _foo(_: &'_ str) -> &'_ str {
         ""
     }
 
-    // 结构体中的匿名生命周期
+    // 结构体定义仍需显式命名生命周期（'_ 不能作为结构体参数名），
+    // 但 impl 块可用 '_ 省略：
     struct _Parser<'a> {
         input: &'a str,
     }
+    impl _Parser<'_> {
+        fn peek(&self) -> &str {
+            self.input
+        }
+    }
+    let parser = _Parser { input: "hello" };
+    println!("   impl _Parser<'_> 的 peek(): {}", parser.peek());
 
     println!("   '_ 用于省略显式生命周期参数");
     println!("   简化生命周期标注");
@@ -149,16 +161,15 @@ fn function_pointer_demo() {
 }
 
 // 其他Rust 2018改进
-#[allow(dead_code)]
 fn other_improvements() {
     // 1. 非词法生命周期 (NLL)
     // 改进了借用检查器，允许更多有效的代码
     let mut x = 5;
     let y = &x;
-    println!("{}", y);
+    println!("   y 引用 x: {}", y);
     // 这里y不再被使用，所以可以改变x
-    x = 6; // 在Rust 2015中这会报错
-    println!("{}", x);
+    x = 6; // 在Rust 2015中这会报错（NLL之前借用需持续到作用域结束）
+    println!("   NLL: y 不再使用后修改 x 成功, x = {}", x);
 
     // 2. 统一路径
     // 统一了use语句中的路径语法

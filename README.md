@@ -23,121 +23,40 @@ error[E0384]: cannot assign twice to immutable variable `x`
 
 ## 2015
 
+Rust 首个稳定 Edition：所有权、借用、生命周期、`mod` 模块系统等核心语言特性的定型版本。
+演示：`cargo run --bin edition_2015`。
+
 ## 2018
 
+模块路径改进（`crate::` 路径、不再需要 `extern crate`）、`dyn Trait`、`async/await` 关键字、匿名生命周期 `'_`、原始标识符 `r#`、切片模式匹配。
+演示：`cargo run --bin edition_2018`。
+
 ## 2021
-rust 2018     let numbers = [27, 297, 38502, 81];
-let division_results = numbers.into_iter().map(|n| divide(*n, 27));
-2021     let numbers = [27, 297, 38502, 81];
-let division_results = numbers.into_iter().map(|n| divide(n, 27));
-为啥？区别
 
-您观察到的现象确实存在，这与 Rust 2021 edition 中的一个重要变更有关：闭包捕获规则的改变。
+**问题：** 同一行代码，2018 下要写 `*n`，2021 下不用：
 
-关键差异
-
-2018 Edition
-
-let numbers = [27, 297, 38502, 81];
-let division_results = numbers.into_iter().map(|n| divide(*n, 27));
-// 需要 *n 解引用
-
-
-2021 Edition
-
-let numbers = [27, 297, 38502, 81];
-let division_results = numbers.into_iter().map(|n| divide(n, 27));
-// 不需要 *n，自动解引用
-
-
-原因：Rust 2021 的闭包捕获改进
-
-在 Rust 2021 中，闭包捕获规则进行了优化，现在能自动解引用某些类型。具体来说：
-
-2018 版本的问题
-
-// 2018: 这会产生编译错误或需要显式解引用
-numbers.into_iter().map(|n| divide(n, 27));
-// 错误：n 是 &i32，但 divide 期望 i32
-
-
-2021 版本的改进
-
-// 2021: 自动解引用
-numbers.into_iter().map(|n| divide(n, 27));
-// 正确：编译器会自动从 &i32 解引用为 i32
-
-
-实际例子
-
-fn divide(a: i32, b: i32) -> i32 {
-a / b
-}
-
-fn main() {
-let numbers = [27, 297, 38502, 81];
-
-    // 2018 写法（需要 *n）
-    let results_2018: Vec<_> = numbers
-        .into_iter()
-        .map(|n| divide(*n, 27))  // 必须解引用
-        .collect();
-    
-    // 2021 写法（自动解引用）
-    let results_2021: Vec<_> = numbers
-        .into_iter()
-        .map(|n| divide(n, 27))  // 自动解引用
-        .collect();
-    
-    println!("Results: {:?}", results_2021);
-}
-
-
-背后的原理
-
-1. 类型匹配：当闭包参数类型与函数期望类型不完全匹配时
-2. 自动转换：Rust 2021 增加了更多的自动解引用和类型转换
-3. Deref 特质：对实现了 Deref trait 的类型自动解引用
-
-其他例子
-
-// 字符串切片也有类似改进
-let words = ["hello", "world"];
-
+```rust
 // 2018
-let lengths_2018: Vec<_> = words
-.iter()
-.map(|s| s.len())  // s 是 &&str，但 .len() 可用
-.collect();
+let division_results = numbers.into_iter().map(|n| divide(*n, 27));
+// 2021
+let division_results = numbers.into_iter().map(|n| divide(n, 27));
+```
 
-// 2021 - 更灵活
-let lengths_2021: Vec<_> = words
-.iter()
-.map(|s| s.to_uppercase())  // 自动解引用多次
-.collect();
+**真正原因（不是"闭包自动解引用"）：** 数组方法调用 `.into_iter()` 的按值/按引用语义由 Edition 门控。
+Rust 1.53 起数组实现了按值的 `IntoIterator for [T; N]`，但为兼容旧代码，2021 之前 `.into_iter()` 这种**方法调用**仍按切片迭代（`n: &i32`，故需 `*n`）；从 2021 起方法调用按值迭代（`n: i32`）。
+注意 `for x in arr` 在所有 Edition 下都按值迭代——这属于迭代器行为变更，与闭包捕获、`Deref` 自动解引用均无关，不存在"编译器自动从 `&i32` 解引用为 `i32`"这回事。
 
+跨 Edition 通用的写法：
 
-重要注意事项
+```rust
+let division_results = numbers.iter().copied().map(|n| divide(n, 27));
+```
 
-1. 不是所有情况都自动解引用：
-   // 这仍然需要手动处理
-   let nums = &[1, 2, 3];
-   let sum: i32 = nums.iter().sum();  // 正确
-   // nums.iter().map(|n| n + 1) 可能需要 *n
+**2021 闭包的真正改进 = 精确捕获（precise capture）：** 闭包只捕获实际用到的字段，部分移动后闭包仍可用（2018 的整体捕获会触发 E0382）。完整演示见 `cargo run --bin edition_2021` 第 1、7 节。
 
-
-2. into_iter() vs iter()：
-   // into_iter() 产生值
-   [1, 2, 3].into_iter().map(|n| n + 1);  // n: i32
-
-   // iter() 产生引用
-   [1, 2, 3].iter().map(|n| n + 1);  // 2021: 自动解引用
-
-迁移建议
-从 2018 升级到 2021 时，可以：
-1. 删除不必要的 * 操作符
-2. 让编译器提示是否需要解引用
-3. 使用 cargo fix --edition 自动修复
-这个改进让 Rust 代码更加简洁，减少了样板代码。
+迁移：`cargo fix --edition` 可自动完成大部分迁移。
 
 ## 2024
+
+最新 Edition：`unsafe` 属性强制化（如 `#[unsafe(no_mangle)]`）、`gen` 保留字、闭包捕获规则进一步简化、部分生命周期语法收紧。
+演示见 `src/bin/edition_2024.rs`（仅 2024 分支提供）。
