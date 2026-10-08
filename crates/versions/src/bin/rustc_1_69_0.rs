@@ -37,7 +37,7 @@ fn main() {
     let rc = Rc::new(f);
     #[cfg(unix)]
     {
-        use std::os::fd::AsFd;
+        use std::os::fd::{AsFd, AsRawFd};
         let fd = rc.as_fd();
         println!("  Rc<File>.as_fd() 的原始 fd = {:?}", fd.as_raw_fd());
     }

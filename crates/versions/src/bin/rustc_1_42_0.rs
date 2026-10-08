@@ -27,9 +27,9 @@ fn main() {
     // 1.42.0 稳定 matches! —— 一个表达式与模式匹配的断言宏（旧写法 match x { Variant => true, _ => false }）。
     println!("\n2. matches!");
     let n = 7;
-    println!("matches!(7, 1..=10               ) = {}", matches!(n, 1..=10));
-    let t = \"abc\";
-    println!("matches!(\"abc\", \"ab\"..=\"ad\"      ) = {}", matches!(t, "ab".."ad"));
+    println!("matches!(7, 1..=10) = {}", matches!(n, 1..=10));
+    let t = "abc";
+    println!("matches!(t, \"abc\") = {}（范围模式仅限 char/数值，&str 不行）", matches!(t, "abc"));
 
     // 1.42.0 稳定 ManuallyDrop::take —— 取出内部值而绕过 Drop（并允许后面手工避免 double drop）。
     println!("\n3. ManuallyDrop::take");
@@ -59,7 +59,7 @@ fn main() {
     // wait_while：在谓词为 false 时持续等待，谓词为 true 解锁返回
     let mut flag = lock.lock().unwrap();
     while !*flag {
-        flag = cvar.wait_while(flag, |f| !*f).unwrap().0;
+        flag = cvar.wait_while(flag, |f| !*f).unwrap(); // 直接返回 MutexGuard
     }
     println!("wait_while 返回，条件已满足（flag = {}）", *flag);
     handle.join().unwrap();
